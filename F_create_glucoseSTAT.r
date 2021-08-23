@@ -11,7 +11,7 @@
 ## . GlucoseCut.goal=c(0.01,0.04,0.7,0.25,0.05) 
 ## ---------------------------------------
 
-create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', memberKey=memberKey, createdtime=createdtime, mod=mod,
+create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', memberKey=memberKey, createdtime=createdtime, mod=mod, TIR.detail.opt=3,
 	TIR.Goal=NULL,TBR_lev2.Cut=NULL,TBR_lev2.Goal=NULL,TBR_lev1.Cut=NULL,TBR_lev1.Goal=NULL,TAR_lev1.Cut=NULL,TAR_lev1.Goal=NULL,TAR_lev2.Cut=NULL,TAR_lev2.Goal=NULL) {
 
 	### output 
@@ -641,7 +641,7 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 	}
 
 	TIR.detail.source = data.frame(gr=rep(c('TAR2','TAR1','TIR','TBR1','TBR2'),4),block=rep(c(1:length(HMScut.6H)),each=5),y=NA,time=NA)#unlist(out.TIR.detail[[1]]))	
-	TIR.detail.opt = 3
+	
 	if ( TIR.detail.opt==1 ) {
 		## 전체시간 중 차지하는 비중
 		for ( b in 1:length(HMScut.6H) ) {
@@ -650,7 +650,7 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 			TIR.detail.source[which(TIR.detail.source$block==b),]$time = out.TIR.detail[[1]][,b]
 		} 
 	} else if ( TIR.detail.opt==2 ) {
-		## 시간block별로 <- 처음에 한버전 . 이걸로 밑에 코딩되어있음 
+		## 시간block별로 <- 처음에 한버전 . 난 이게 맞는것 같아!! ############################################################################### 
 		for ( b in 1:length(HMScut.6H) ) {
 		#	out.TIR.detail[[1]][[b]] = 100*out.TIR.detail[[1]][,b]/sum(out.TIR.detail[[1]][,b],na.rm=T)
 			TIR.detail.source[which(TIR.detail.source$block==b),]$y = 100*out.TIR.detail[[1]][,b]/sum(out.TIR.detail[[1]][,b],na.rm=T)
@@ -665,6 +665,8 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 		}
 	}
 
+#	TIR.detail.source$y = ifelse( is.na(TIR.detail.source$y), 0, TIR.detail.source$y )
+
 	TIR.detail.source$colYN = 0
 	TIR.detail.source$xlab = ifelse(TIR.detail.source$block==1,'야간',ifelse(TIR.detail.source$block==2,'오전',ifelse(TIR.detail.source$block==3,'오후','저녁')))
 	TIR.detail.source$timelab = ifelse(TIR.detail.source$time>60,paste(TIR.detail.source$time%/%60,'시간',TIR.detail.source$time%%60,'분',sep=''),paste(TIR.detail.source$time,'분',sep=''))
@@ -672,8 +674,8 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 	out.TIR.detail[[2]] = vector('list',5)
 	names(out.TIR.detail[[2]]) = c('TAR2','TAR1','TIR','TBR1','TBR2')
 
-	if ( !is.na(TAR_lev2.Goal) ) {
-		TIR.detail.source$colYN[which(TIR.detail.source$gr=='TAR2')[which.max(TIR.detail.source[which(TIR.detail.source$gr=='TAR2'),]$y)]]=1
+	if ( !is.na(TAR_lev2.Goal) && any(!is.na(TIR.detail.source[which(TIR.detail.source$gr=='TAR2'),]$y)) ) {
+		TIR.detail.source$colYN[which(TIR.detail.source$gr=='TAR2')[which.max(TIR.detail.source[which(TIR.detail.source$gr=='TAR2'),]$y)]]=1 #=> 0 일 경우 에 대한 이슈 처리 필요 
 		ylim.tmp = c(0,max(TIR.detail.source[which(TIR.detail.source$gr=='TAR2'),]$y))
 		ylim.tmp[2] = ifelse(max(ylim.tmp)==0, 1, round(ylim.tmp[2]*1.1,0))
 		out.TIR.detail[[2]][[1]] = ggplot(TIR.detail.source[which(TIR.detail.source$gr=='TAR2'),],aes(x=xlab,y=y,fill=factor(colYN)))+
@@ -701,7 +703,7 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 			plot.margin=margin(0.7,0.3,0.3,0.3,unit='cm'))
 	}
 
-	if ( !is.na(TAR_lev1.Goal) ) {
+	if ( !is.na(TAR_lev1.Goal) && any(!is.na(TIR.detail.source[which(TIR.detail.source$gr=='TAR1'),]$y)) ) {
 		TIR.detail.source$colYN[which(TIR.detail.source$gr=='TAR1')[which.max(TIR.detail.source[which(TIR.detail.source$gr=='TAR1'),]$y)]]=1
 		ylim.tmp = c(0,max(TIR.detail.source[which(TIR.detail.source$gr=='TAR1'),]$y))
 		ylim.tmp[2] = ifelse(max(ylim.tmp)==0, 1, round(ylim.tmp[2]*1.1,0))
@@ -729,7 +731,7 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 			plot.margin=margin(0.7,0.3,0.3,0.3,unit='cm'))
 	}
 	
-	if ( !is.na(TBR_lev1.Goal) ) {
+	if ( !is.na(TBR_lev1.Goal) && any(!is.na(TIR.detail.source[which(TIR.detail.source$gr=='TBR1'),]$y)) ) {
 		TIR.detail.source$colYN[which(TIR.detail.source$gr=='TBR1')[which.max(TIR.detail.source[which(TIR.detail.source$gr=='TBR1'),]$y)]]=1
 		ylim.tmp = c(0,max(TIR.detail.source[which(TIR.detail.source$gr=='TBR1'),]$y))
 		ylim.tmp[2] = ifelse(max(ylim.tmp)==0, 1, round(ylim.tmp[2]*1.1,0))
@@ -757,7 +759,7 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 			plot.margin=margin(0.7,0.3,0.3,0.3,unit='cm'))
 	}
 
-	if ( !is.null(TBR_lev2.Goal) ) {
+	if ( !is.null(TBR_lev2.Goal) && any(!is.na(TIR.detail.source[which(TIR.detail.source$gr=='TBR2'),]$y)) ) {
 		TIR.detail.source$colYN[which(TIR.detail.source$gr=='TBR2')[which.max(TIR.detail.source[which(TIR.detail.source$gr=='TBR2'),]$y)]]=1
 		ylim.tmp = c(0,max(TIR.detail.source[which(TIR.detail.source$gr=='TBR2'),]$y))
 		ylim.tmp[2] = ifelse(max(ylim.tmp)==0, 1, round(ylim.tmp[2]*1.1,0))
