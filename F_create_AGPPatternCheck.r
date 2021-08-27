@@ -67,7 +67,7 @@ create_AGPPatternCheck = function( data, unit.glucose='mg.dl', Target='T2DM', Ta
 
 	for ( p in subP ) {
 
-		out.AGP[[p]] = vector('list',length=2)
+		out.AGP[[p]] = vector('list',length=4)
 		data.tmp = data[which(data$sub==p & data$log==1),]
 		tmp = tapply(data.tmp$glucose,data.tmp$HMSIdx.15M,function(x) {quantile(x,probs=c(0.05,0.25,0.5,0.75,0.95))})
 
@@ -147,20 +147,43 @@ create_AGPPatternCheck = function( data, unit.glucose='mg.dl', Target='T2DM', Ta
 		Q95.ytmp = ifelse(last_value$Q95.s>(Q75.ytmp+20),last_value$Q95.s,(Q75.ytmp+20))
 
 		out.AGP[[p]][[2]] = out.AGP[[p]][[2]]+theme(plot.margin=unit(c(1,1.5,0,0.5),'cm'))
-		out.AGP[[p]][[2]] = out.AGP[[p]][[2]]+							
-			annotation_custom(grob=textGrob(expression('95%'),gp=gpar(col='#bcbec0',fontsize=8,fontfamily='NotoSansCJKkrR')),xmin=last_date+20*60,xmax=last_date+20*60,ymin=Q95.ytmp,ymax=Q95.ytmp)+
+
+		## for Web
+		out.AGP[[p]][[3]] = out.AGP[[p]][[2]]+							
+			annotation_custom(grob=textGrob(expression('95%'),gp=gpar(col='#bcbec0',fontsize=12,fontfamily='NotoSansCJKkrR')),xmin=last_date+20*60,xmax=last_date+20*60,ymin=Q95.ytmp,ymax=Q95.ytmp)+
 			annotation_custom(grob=linesGrob(gp=gpar(col='#bcbec0',lty=2,size=0.8)),xmin=last_date-30*60,xmax=last_date-10*60,ymin=last_value$Q95.s,ymax=Q95.ytmp)+
-			annotation_custom(grob=textGrob(expression('75%'),gp=gpar(col='#a2b5d4',fontsize=8,fontface='bold',fontfamily='NotoSansCJKkrR')),xmin=last_date+20*60,xmax=last_date+20*60,ymin=Q75.ytmp,ymax=Q75.ytmp)+
+			annotation_custom(grob=textGrob(expression('75%'),gp=gpar(col='#a2b5d4',fontsize=12,fontface='bold',fontfamily='NotoSansCJKkrR')),xmin=last_date+20*60,xmax=last_date+20*60,ymin=Q75.ytmp,ymax=Q75.ytmp)+
 			annotation_custom(grob=linesGrob(gp=gpar(col='#a2b5d4',size=0.8)),xmin=last_date-30*60,xmax=last_date-10*60,ymin=last_value$Q75.s,ymax=Q75.ytmp)+
-			annotation_custom(grob=textGrob(expression('50%'),gp=gpar(col='#1f50ce',fontsize=8,fontface='bold',fontfamily='NotoSansCJKkrR')),xmin=last_date+20*60,xmax=last_date+20*60,ymin=Q50.ytmp,ymax=Q50.ytmp)+
+			annotation_custom(grob=textGrob(expression('50%'),gp=gpar(col='#1f50ce',fontsize=12,fontface='bold',fontfamily='NotoSansCJKkrR')),xmin=last_date+20*60,xmax=last_date+20*60,ymin=Q50.ytmp,ymax=Q50.ytmp)+
 			annotation_custom(grob=linesGrob(gp=gpar(col='#1f50ce',size=1)),xmin=last_date-30*60,xmax=last_date-10*60,ymin=last_value$Q50.s,ymax=Q50.ytmp)+
-			annotation_custom(grob=textGrob(expression('25%'),gp=gpar(col='#a2b5d4',fontsize=8,fontface='bold',fontfamily='NotoSansCJKkrR')),xmin=last_date+20*60,xmax=last_date+20*60,ymin=Q25.ytmp,ymax=Q25.ytmp)+
+			annotation_custom(grob=textGrob(expression('25%'),gp=gpar(col='#a2b5d4',fontsize=12,fontface='bold',fontfamily='NotoSansCJKkrR')),xmin=last_date+20*60,xmax=last_date+20*60,ymin=Q25.ytmp,ymax=Q25.ytmp)+
 			annotation_custom(grob=linesGrob(gp=gpar(col='#a2b5d4',size=0.8)),xmin=last_date-30*60,xmax=last_date-10*60,ymin=last_value$Q25.s,ymax=Q25.ytmp)+
-			annotation_custom(grob=textGrob(expression('5%'),gp=gpar(col='#bcbec0',fontsize=8,fontfamily='NotoSansCJKkrR')),xmin=last_date+20*60,xmax=last_date+20*60,ymin=last_value$Q05.s,ymax=last_value$Q05.s)+
+			annotation_custom(grob=textGrob(expression('5%'),gp=gpar(col='#bcbec0',fontsize=12,fontfamily='NotoSansCJKkrR')),xmin=last_date+20*60,xmax=last_date+20*60,ymin=last_value$Q05.s,ymax=last_value$Q05.s)+
 			annotation_custom(grob=linesGrob(gp=gpar(col='#bcbec0',lty=2,size=0.8)),xmin=last_date-30*60,xmax=last_date-10*60,ymin=last_value$Q05.s,ymax=last_value$Q05.s)+
 
-			annotation_custom(grob=textGrob(ymin.Target,gp=gpar(col='#231f20',fontsize=8,fontface='plain',fontfamily='NotoSansCJKkrB')),xmin=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-75*60),xmax=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-75*60),ymin=ymin.Target,ymax=ymin.Target)+ 
-			annotation_custom(grob=textGrob(ymax.Target,gp=gpar(col='#231f20',fontsize=8,fontface='plain',fontfamily='NotoSansCJKkrB')),xmin=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-75*60),xmax=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-75*60),ymin=ymax.Target,ymax=ymax.Target)+ 
+			annotation_custom(grob=textGrob(ymin.Target,gp=gpar(col='#231f20',fontsize=13,fontface='plain',fontfamily='NotoSansCJKkrB')),xmin=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-75*60),xmax=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-75*60),ymin=ymin.Target,ymax=ymin.Target)+ 
+			annotation_custom(grob=textGrob(ymax.Target,gp=gpar(col='#231f20',fontsize=13,fontface='plain',fontfamily='NotoSansCJKkrB')),xmin=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-75*60),xmax=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-75*60),ymin=ymax.Target,ymax=ymax.Target)+ 
+			annotation_custom(grob=linesGrob(gp=gpar(col='#40ac49',lwd=0.8)),xmin=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-45*60),xmax=as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT'),ymin=ymin.Target,ymax=ymin.Target)+
+			annotation_custom(grob=linesGrob(gp=gpar(col='#40ac49',lwd=0.8)),xmin=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-45*60),xmax=as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT'),ymin=ymax.Target,ymax=ymax.Target)
+
+
+		## for App
+
+#		out.AGP[[p]][[3]]$theme$text$size # null 로 나옴 
+		out.AGP[[p]][[4]] = out.AGP[[p]][[2]]+							
+			annotation_custom(grob=textGrob(expression('95%'),gp=gpar(col='#bcbec0',fontsize=18,fontfamily='NotoSansCJKkrR')),xmin=last_date+20*60,xmax=last_date+20*60,ymin=Q95.ytmp,ymax=Q95.ytmp)+
+			annotation_custom(grob=linesGrob(gp=gpar(col='#bcbec0',lty=2,size=0.8)),xmin=last_date-30*60,xmax=last_date-10*60,ymin=last_value$Q95.s,ymax=Q95.ytmp)+
+			annotation_custom(grob=textGrob(expression('75%'),gp=gpar(col='#a2b5d4',fontsize=18,fontface='bold',fontfamily='NotoSansCJKkrR')),xmin=last_date+20*60,xmax=last_date+20*60,ymin=Q75.ytmp,ymax=Q75.ytmp)+
+			annotation_custom(grob=linesGrob(gp=gpar(col='#a2b5d4',size=0.8)),xmin=last_date-30*60,xmax=last_date-10*60,ymin=last_value$Q75.s,ymax=Q75.ytmp)+
+			annotation_custom(grob=textGrob(expression('50%'),gp=gpar(col='#1f50ce',fontsize=18,fontface='bold',fontfamily='NotoSansCJKkrR')),xmin=last_date+20*60,xmax=last_date+20*60,ymin=Q50.ytmp,ymax=Q50.ytmp)+
+			annotation_custom(grob=linesGrob(gp=gpar(col='#1f50ce',size=1)),xmin=last_date-30*60,xmax=last_date-10*60,ymin=last_value$Q50.s,ymax=Q50.ytmp)+
+			annotation_custom(grob=textGrob(expression('25%'),gp=gpar(col='#a2b5d4',fontsize=18,fontface='bold',fontfamily='NotoSansCJKkrR')),xmin=last_date+20*60,xmax=last_date+20*60,ymin=Q25.ytmp,ymax=Q25.ytmp)+
+			annotation_custom(grob=linesGrob(gp=gpar(col='#a2b5d4',size=0.8)),xmin=last_date-30*60,xmax=last_date-10*60,ymin=last_value$Q25.s,ymax=Q25.ytmp)+
+			annotation_custom(grob=textGrob(expression('5%'),gp=gpar(col='#bcbec0',fontsize=18,fontfamily='NotoSansCJKkrR')),xmin=last_date+20*60,xmax=last_date+20*60,ymin=last_value$Q05.s,ymax=last_value$Q05.s)+
+			annotation_custom(grob=linesGrob(gp=gpar(col='#bcbec0',lty=2,size=0.8)),xmin=last_date-30*60,xmax=last_date-10*60,ymin=last_value$Q05.s,ymax=last_value$Q05.s)+
+
+			annotation_custom(grob=textGrob(ymin.Target,gp=gpar(col='#231f20',fontsize=20,fontface='plain',fontfamily='NotoSansCJKkrB')),xmin=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-75*60),xmax=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-75*60),ymin=ymin.Target,ymax=ymin.Target)+ 
+			annotation_custom(grob=textGrob(ymax.Target,gp=gpar(col='#231f20',fontsize=20,fontface='plain',fontfamily='NotoSansCJKkrB')),xmin=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-75*60),xmax=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-75*60),ymin=ymax.Target,ymax=ymax.Target)+ 
 			annotation_custom(grob=linesGrob(gp=gpar(col='#40ac49',lwd=0.8)),xmin=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-45*60),xmax=as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT'),ymin=ymin.Target,ymax=ymin.Target)+
 			annotation_custom(grob=linesGrob(gp=gpar(col='#40ac49',lwd=0.8)),xmin=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-45*60),xmax=as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT'),ymin=ymax.Target,ymax=ymax.Target) 
 
@@ -169,6 +192,9 @@ create_AGPPatternCheck = function( data, unit.glucose='mg.dl', Target='T2DM', Ta
 
 	### step2 =============================================================================##
 	## 혈당 패턴
+	step2.YN=F
+	if ( step2.YN==F ) { # 임시 # 
+
 	out.PTRN = vector('list',3)
 	out.PTRN.detail = vector('list',3)
 
@@ -328,12 +354,11 @@ create_AGPPatternCheck = function( data, unit.glucose='mg.dl', Target='T2DM', Ta
 		out.PTRN[[3]][3,1] = '일일 혈당패턴이 안정적인 변동성을 보입니다.'
 	}
 
-
-    ## 출력 테스트 ## 
+	## 출력 테스트 ## 
     ptrn.theme_forWeb = ttheme_minimal(base_family='NotoSansCJKkrR',
         core = list(bg_params=list(fill=c('#F7F8F9','#FFF6F9')[rep(c(ptrn.Hypo[2],ptrn.Hypo[2],ptrn.Hypo[2]),each=3)+1],col=NA),
                     fg_params=list(hjust=0,x=0.01,vjust=c(0,0,0.7),
-                        col=c(c('#000000',c('#000000','#FF2525')[ptrn.Hypo[2]+1],'#808285'),c('#000000',c('#000000','#FF2525')[ptrn.Hypo[2]+1],'#808285'),c('#000000'c('#000000','#FF2525')[ptrn.Hypo[2]+1],'#808285')),
+                        col=c(c('#000000',c('#000000','#FF2525')[ptrn.Hypo[2]+1],'#808285'),c('#000000',c('#000000','#FF2525')[ptrn.Hypo[2]+1],'#808285'),c('#000000',c('#000000','#FF2525')[ptrn.Hypo[2]+1],'#808285')),
                         fontsize=c(13.5,14,11),fontface=c('plain','bold','plain'))
         )
     )
@@ -342,316 +367,56 @@ create_AGPPatternCheck = function( data, unit.glucose='mg.dl', Target='T2DM', Ta
         widths=unit(360,'points'),heights=unit(rep(c(23,30,30),3),'points'))
 
 
-	### step3 =============================================================================##
-	## 출력
-
-    LibreReport_AGP_forWeb = try(grid.arrange(grobs=list(tableGrob('24시간 연속 혈당 프로필 (AGP)',theme=subTitle.theme_forWeb,cols=NULL,rows=NULL,widths=unit(876,'points'),heighs=unit(26,'points')))),silent=T)
+	} ## 임시 
 
 
-		## timeblock 정의 --
-		HMScut.3B = strptime(paste(Sys.Date(),c('00:00:00','06:00:00','12:00:00')),format='%Y-%m-%d %H:%M:%S',tz='GMT')
-		data$timeCut.3B = NA
-		for( i in 1:nrow(data)) data$timeCut.3B[i] = sum(round(data$timef[i],unit='min')>=HMScut.3B)
 
-		sd.t = sd(data[which(data$sub==p & data$log==1),]$glucose)
+	### output =============================================================================##
 
-
-		## 항목1. 하루내 혈당변동성 ---
-		# pattern : rollerCoaster 
-		# : 하루내의 혈당패턴이 들쭉날쭉한 경우 : intra-days, within days, => 하루내 혈당변동이 크다 => flatter한 혈당변동을 목표로 조절해야한다.
-		# : sd.hhmm 
-		x.hhmm = tapply(data[which(data$sub==p & data$log==1),]$glucose,data[which(data$sub==p & data$log==1),]$timeCut.15M,mean)
-		sd.hhmm = sd(x.hhmm)
-#		avg.hhmm = mean(x.hhmm)
-		# sd.w = mean(tapply(data[which(data$sub==p & data$log==1),]$glucose,data[which(data$sub==p & data$log==1),]$date,sd))
-		# if (sd.hhmm > sd.w)
-		# if (sd.hhmm > avg.hhmm/3 )
-		# if (sd.hhmm > 26 )  : 정상적인 혈당변동성의 sd는 10-26이내이어야함에 따라 / ref. : in ternational consensus use of continuous glucose monitoring (diabetsjournals.org)
-		rollerCoaster = vector('list',2)
-
-		if( sd.hhmm > 26 ) {
-			rollerCoaster[[1]] = 1
-			rollerCoaster[[2]] = paste('롤러코스터패턴','24시간 혈당패턴이 높은 변동성을 보입니다. flatter한 24시간혈당패턴이 되도록 관리해주세요.',sep='') 
-		} else {
-			rollerCoaster[[1]] = 0
-			rollerCoaster[[2]] = paste('24시간 혈당패턴이 낮은 변동성을 보입니다. 지금처럼 안정적인 24시간혈당 변동 패턴을 유지해주세요.',sep='')
-		}
-
-		## 항목2. 하루내 혈당변동을 일으키는 시간구간 ---
-
-		rollerCoaster.sub = vector('list',3)
-		# : 24시간혈당패턴선을 기준으로 기울기가 가장 높거나 작은 시간은?
-	#	fit.tmp = loess(Q05~index,data=out.AGP[[p]][[1]],span=0.1)
-		# : 15m 단위로 쪼개서 기울기 검색
-		coef.w = rep(NA,96)
-		for( i in 1:96 ) {
-			timepoint = i:(i+1)
-			timepoint = ifelse( timepoint<1, timepoint+96, ifelse( timepoint>96, timepoint-96, timepoint))
-			x.tmp = out.AGP[[p]][[1]][which(out.AGP[[p]][[1]]$index %in% timepoint),]$Q50
-			t = c(1:length(timepoint))
-			coef.w[i] = coef(lm(x.tmp~t))['t']
-		}
-
-
-		if( rollerCoaster[[1]]==1 ) {
-				
-			x.hhmm.sub = vector('list',3)
-			sd.hhmm.sub = vector('list',3)
-			for( b in 1:3 ) {
-				x.hhmm.sub[[b]] = tapply(data[which(data$sub==p & data$log==1 & data$timeCut.3B==b),]$glucose,data[which(data$sub==p & data$log==1 & data$timeCut.3B==b),]$timeCut.15M,mean)
-				sd.hhmm.sub[[b]] = sd(x.hhmm.sub[[b]])
-			}
-			rollerCoaster.sub[[1]] = paste(c('야간시간','오전시간','활동시간')[which.max(sd.hhmm.sub)],'에 혈당패턴의 변동이 가장 크게 나타납니다.',sep='') # todo / 다 유사할 가능성도 고려해야하지않을까? 
-
-			if( coef.w[which.max(coef.w)]>0 ) {
-				faster.set = which(coef.w/15>=3)
-				if( length(faster.set)>0 ) {
-					faster.time = format(HMScut.15M[faster.set],'%H시%M분')
-					faster.tmp = '급격한 '
-				} else {
-					faster.time = format(HMScut.15M[which.max(coef.w)],'%H시%M분')
-					faster.tmp = ''
-				}
-	#			faster.tmp = ifelse(length(faster.set)>0, '급격한 ','')
-				faster.time = paste(faster.time,collapse=',')
-				rollerCoaster.sub[[2]] = paste(faster.time, faster.tmp,'혈당 상승 패턴을 보입니다.', sep='')
-			} else {
-				rollerCoaster.sub[[2]] = NA
-			}
-
-			if( coef.w[which.min(coef.w)]<0 ) {
-				faster.set = which(coef.w/15<=(-1))
-				if( length(faster.set)>0 ) {
-					faster.time = format(HMScut.15M[faster.set],'%H시%M분')
-					faster.tmp = '급격한 '
-				} else {
-					faster.time = format(HMScut.15M[which.max(coef.w)],'%H시%M분')
-					faster.tmp = ''
-				}
-				faster.time = paste(faster.time,collapse=',')
-				rollerCoaster.sub[[3]] = paste(faster.time,' 경 ', faster.tmp,'혈당 하강 패턴을 보입니다.', sep='')
-			} else {
-				rollerCoaster.sub[[3]] = NA 
-			}
-
-		}
-
-# 		if( rollerCoaster[[1]]==0 ) { 
-			# todo / 롤러코스터패턴이 아닐때에도 혈당상승하강패턴이나... 등등 알려줘야할 정보가 있을지 
-#		}
-
-		## 항목2. patterns of High/ Low 
-#		patternsPeak = vector('list',2)
-#		names(patternsPeak) = c('High','Low')
-
-
-		## 항목3. Inter-day 혈당변동성 ---
-		# pattern : ballooning
-		# sd.b.hhmm 이 가장 클 때엔, IDR 이 큰 시점일 수 있음 (루틴한 패턴이 아닌 특별한 이벤트에 의한 경우가 있을 수 있음)
-		sd.dm = sd(tapply(data[which(data$sub==p & data$log==1),]$glucose,data[which(data$sub==p & data$log==1),]$date,mean))
-		x.b.hhmm = tapply(data[which(data$sub==p & data$log==1),]$glucose,data[which(data$sub==p & data$log==1),]$timeCut.15M,sd)
-		sd.b.hhmm = mean(x.b.hhmm)		
- 		
-		out.AGP[[p]][[1]]$IQR = out.AGP[[p]][[1]]$Q75-out.AGP[[p]][[1]]$Q25
-		out.AGP[[p]][[1]]$IDR = out.AGP[[p]][[1]]$Q95-out.AGP[[p]][[1]]$Q05
-		out.AGP[[p]][[1]]$diffIQRIDR = (out.AGP[[p]][[1]]$IDR - out.AGP[[p]][[1]]$IQR)
-
-		ballooning = vector('list',2)
-# 		if( sd.b.hhnn > 26 ) # 이건 iqr 자체가 다 큰지 
-#		if ( sd(x.b.hhmm) > sd.b.hhmm/3 ) # todo / sd > mean/3 이면 변동성이 크다는 것이 일반적인 것인지 확인 필요함 (이건 iqr이 작았다컸다라는 의미고)
-		if ( sd(x.b.hhmm) > sd.b.hhmm/3 ) {
-			ballooning[[1]] = 1
-			ballooning[[2]] = paste('풍선패턴 ','일일 혈당 패턴이 높은 변동성을 보입니다. 풍선처럼 부풀어오르는 패턴이 줄어들도록 관리해주세요.',sep='') # 특정시간대에 혈당변동성이 높은 경우 (IQR기준)
-		} else if( sd.b.hhmm > 26 ) {
-			ballooning[[1]] = 2
-			ballooning[[2]] = paste('풍선패턴 ','일일 혈당 패턴이 높은 변동성을 보입니다. 풍선처럼 부푼 푸른색 면적의 패턴이 줄어들도록 관리해주세요.',sep='') # 하루 종일 혈당 변동성이 높은 경우 (IQR기준) # todo / 멘트변경필요
-		} else {
-			ballooning[[1]] = 0 
-			ballooning[[2]] = paste('칭찬코멘트주기',sep='') # todo
-		}
-
-
-		## 항목4. day-to-day간 혈당변동을 일으키는 시간구간 ---
-		ballooning.sub = vector('list',4)
-		# 1: (IQR) interVar 이 가장 큰 timepoint
-		# 2: (IQR) interVar 이 큰 timeblock
-		# 3: (IQR) 혈당변동상승 구간
-		# 4: (IDR) interVar 이 가장 큰 timepoint (less IQR)
-		
-		if( ballooning[[1]]==1 ) {
-			
-			### 1: (IQR) interVar 이 가장 큰 timepoint
-#			ballooning.sub[[1]] = format(HMScut.15M[which.max(out.AGP[[p]][[1]][1:96,]$IQR)],'%H시%M분')
-			maxIQR.time = which.max(out.AGP[[p]][[1]][1:96,]$IQR)
-			ballooning.sub[[1]] = format(HMScut.15M[maxIQR.time],'%H시%M분')
-
-			### 3: (IQR) 혈당변동상승 구간
-			coef.sub = rep(NA,96)
-			for( i in 1:96 ) {
-				timepoint = (i-1):(i+1) # 30min단위
-				t = c(1:length(timepoint))
-				timepoint = ifelse( timepoint<1, timepoint+96, ifelse( timepoint>96, timepoint-96, timepoint))
-				x.sub = out.AGP[[p]][[1]][which(out.AGP[[p]][[1]]$index%in%timepoint),]$IQR
-				coef.sub[i] = coef(lm(x.sub~t))['t']
-			}
-
-#			ballooning.strt = format(HMScut.15M[max(which(coef.sub[1:(maxIQR.time-1)]<0))+1],'%H시%M분') #혈당변동상승 시작구간
-#			ballooning.end = format(HMScut.15M[c((maxIQR.time+1):96)[which(coef.sub[(maxIQR.time+1):96]>0)[1]]],'%H시%M분') #혈당변동상승 마지막구간 
-#			ballooning.sub[[3]] = paste(ballooning.strt,'-',ballooning.end,' 사이 일일 혈당 패턴의 변화가 크게 나타납니다. ','일상패턴 중 혈당변화를 발생시키는 습관이 있는지 되짚어보세요.', sep='')			
-			ballooning.strt = max(which(coef.sub[1:(maxIQR.time-1)]<0))+1 #혈당변동상승 시작구간
-			ballooning.end = c((maxIQR.time+1):96)[which(coef.sub[(maxIQR.time+1):96]>0)[1]] #혈당변동상승 마지막구간 
-			ballooning.sub[[3]] = paste(format(HMScut.15M[ballooning.strt],'%H시%M분'),'-',format(HMScut.15M[ballooning.end],'%H시%M분'),' 사이 일일 혈당 패턴의 변화가 크게 나타납니다. ','일상패턴 중 혈당변화를 발생시키는 습관이 있는지 되짚어보세요.', sep='')
-
-			### 4: (IDR) interVar 이 가장 큰 timepoint
-			lessIQR.time = which(out.AGP[[p]][[1]]$IQR < mean(out.AGP[[p]][[1]]$IQR))
-			maxIDR.time = lessIQR.time[which.max(out.AGP[[p]][[1]][lessIQR.time,]$IDR)]
-			ballooning.sub[[4]] = paste(format(HMScut.15M[maxIDR.time],'%H시%M분'),'경 일상적이지 않은 불규칙하거나 특별한 이벤트에 의해 혈당 변화가 크게 나타납니다. ','분석기간 중 특별한 일이 있었는지 되짚어보세요.', sep='') 
-
-
-		} 
-
-		if( ballooning[[1]]==2 ) {
-			
-			### 1: (IQR) interVar 이 가장 큰 timepoint
-#			ballooning.sub[[1]] = format(HMScut.15M[which.max(out.AGP[[p]][[1]][1:96,]$IQR)],'%H시%M분')
-			maxIQR.time = which.max(out.AGP[[p]][[1]][1:96,]$IQR)
-			ballooning.sub[[1]] = format(HMScut.15M[maxIQR.time],'%H시%M분')
-
-			### 2: (IQR) interVar 이 큰 timeblock
-			x.b.hhmm.sub = vector('list',3)
-			sd.b.hhmm.sub = vector('list',3)
-			for( b in 1:3 ) {
-				x.b.hhmm.sub[[b]] = tapply(data[which(data$sub==p & data$log==1 & data$timeCut.3B==b),]$glucose,data[which(data$sub==p & data$log==1 & data$timeCut.3B==b),]$timeCut.15M,sd)
-				sd.b.hhmm.sub[[b]] = mean(x.b.hhmm.sub[[b]])
-			}
-			ballooning.sub[[2]] = paste(c('야간시간','오전시간','활동시간')[which.max(sd.b.hhmm.sub)],'에 일일 혈당 변동이 큰 편입니다.',sep='') # todo / 다 유사할 가능성 고려  
-
-			### 4: (IDR) interVar 이 가장 큰 timepoint
-			lessIQR.time = which(out.AGP[[p]][[1]]$IQR < mean(out.AGP[[p]][[1]]$IQR))
-			maxIDR.time = lessIQR.time[which.max(out.AGP[[p]][[1]][lessIQR.time,]$IDR)]
-			ballooning.sub[[4]] = paste(format(HMScut.15M[maxIDR.time],'%H시%M분'),'경 일상적이지 않은 불규칙하거나 특별한 이벤트에 의해 혈당 변화가 크게 나타납니다. ','분석기간 중 특별한 일이 있었는지 되짚어보세요.', sep='') 
-
-
-		} else if ( ballooning[[1]]==0 ) {
+	AGPPlot.Remark1_forWeb = data.frame(c1='■',c2='25~75백분위수 면적은 일상적인 생활패턴에 의해 나타납니다.')
+	AGPPlot.Remark2_forWeb = data.frame(c1='■',c2='5~95백분위수 면적은 어느 특별한 이벤트에 의해 나타납니다.')
 	
-			### 4: (IDR) interVar 이 가장 큰 timepoint
-			lessIQR.time = which(out.AGP[[p]][[1]]$IQR < mean(out.AGP[[p]][[1]]$IQR))
-			maxIDR.time = lessIQR.time[which.max(out.AGP[[p]][[1]][lessIQR.time,]$IDR)]
-			ballooning.sub[[4]] = paste(format(HMScut.15M[maxIDR.time],'%H시%M분'),'경 일상적이지 않은 불규칙하거나 특별한 이벤트에 의해 혈당 변화가 크게 나타납니다. ','분석기간 중 특별한 일이 있었는지 되짚어보세요.', sep='') 
-		
-			ballooning.sub[[4]] = paste(c('야간시간','오전시간','활동시간')[which.max(sd.b.hhmm.sub)],'에 일일 혈당 변동이 큰 편입니다.',sep='') # todo / 다 유사할 가능성 고려  
+	remark1.theme_forWeb = ttheme_minimal(base_family='NotoSansCJKkrR',
+		core = list(bg_params=list(fill=NA,col=NA),
+					fg_params=list(hjust=0,x=c(0.3,0),vjust=0.5,col=c('#a2b5d4','#808285'),
+					fontsize=12,fontface='plain')
+		)
+	)
+	remark2.theme_forWeb = ttheme_minimal(base_family='NotoSansCJKkrR',
+		core = list(bg_params=list(fill=NA,col=NA),
+					fg_params=list(hjust=0,x=c(0.3,0),vjust=0.5,col=c('#dfe3ed','#808285'),
+					fontsize=12,fontface='plain')
+		)
+	)
 
-		}
+	CairoPNG(filename=paste(memberKey,createdtime,'Web_AGP.png',sep='_'),family='NotoSansCJKkrR',scale=1/0.32,bg='white',width=1168,height=1100,unit='px',dpi=96)
 
-	}
+	LibreReport_AGP_forWeb = try(grid.arrange(grobs=list(tableGrob('24시간 연속 혈당 프로필 (AGP)',theme=subTitle.theme_forWeb,cols=NULL,rows=NULL,widths=unit(876,'points'),heights=unit(26,'points')),
+		tableGrob('AGP는 보고서 기간의 혈당 값을 요약한 것으로, 중앙값(50%) 및 기타 백분위수가 하루에 발생한 것처럼 함께 표시됩니다.',theme=remark.theme_forWeb,cols=NULL,rows=NULL,widths=unit(876,'points'),heights=unit(26,'points')),
+		tableGrob(AGPPlot.Remark1_forWeb,theme=remark1.theme_forWeb,cols=NULL,rows=NULL,widths=unit(c(24,852),'points'),heights=unit(21,'points')),
+		tableGrob(AGPPlot.Remark2_forWeb,theme=remark2.theme_forWeb,cols=NULL,rows=NULL,widths=unit(c(24,852),'points'),heights=unit(21,'points')),
+		out.AGP[[1]][[3]]),
+		nrow=5,ncol=2,layout_matrix=rbind(c(1,1),c(2,2),c(3,3),c(4,4),c(5,5)),
+		widths=unit(c(24,852),'points'),heights=unit(c(26,26,21,21,276),'points')),silent=T)
 
-	
-	### step3 =============================================================================##
-	## 각 분석기간별 24h-AGP 그래프 에 추가 
+	dev.off()
 
-	for( p in subP ) {
-
-		## maxIQR.time 라인 추가 
-		maxIQR.set = data.frame(time = rep(out.AGP[[p]][[1]][out.AGP[[p]][[1]]$index==maxIQR.time,]$time,2),
-								glucose = as.numeric(as.vector(out.AGP[[p]][[1]][out.AGP[[p]][[1]]$index==maxIQR.time,c('Q25.s','Q75.s')])))
-
-		out.AGP[[p]][[2]] = out.AGP[[p]][[2]] + 
-							annotate('segment',x=maxIQR.set$time[1],xend=maxIQR.set$time[1],y=maxIQR.set$glucose[1],yend=maxIQR.set$glucose[2], alpha=0.6,colour='#ff5454',size=1.3)+
-							annotate('text',x=maxIQR.set$time[1],y=maxIQR.set$glucose[1]-3,label='more variability',col='#333333',fontsize=8.5,fontface='bold',fontfamily='KRfontname',hjust='left')
-							
-		
-		## maxIDR.time 라인 추가 
-		maxIDR.set = data.frame(time = rep(out.AGP[[p]][[1]][out.AGP[[p]][[1]]$index==maxIDR.time,]$time,2),
-								glucose = as.numeric(as.vector(out.AGP[[p]][[1]][out.AGP[[p]][[1]]$index==maxIDR.time,c('Q05.s','Q95.s')])))
-		out.AGP[[p]][[2]] = out.AGP[[p]][[2]] + 
-							annotate('segment',x=maxIDR.set$time[1],xend=maxIDR.set$time[1],y=maxIDR.set$glucose[1],yend=maxIDR.set$glucose[2], alpha=0.6,colour='#ff5454',size=1.3)+
-							annotate('text',x=maxIDR.set$time[1],y=maxIDR.set$glucose[1]-3,label='more variability',col='#333333',fontsize=8.5,fontface='bold',fontfamily='KRfontname',hjust='left')
-
-		## ballooning.sub[[3]]
-#		out.AGP[[p]][[2]] = out.AGP[[p]][[2]] + 
-#							annotate('rect',xmin=out.AGP[[p]][[1]][out.AGP[[p]][[1]]$index==ballooning.strt,]$time,xmax=out.AGP[[p]][[1]][out.AGP[[p]][[1]]$index==ballooning.end,]$time,ymin=0,ymax=ylim.tmp,color='#ff5454',fill=NA,lty=2,lwd=1.6)
-
-		## 
-
+	if ( class(LibreReport_AGP_forWeb)[1]!='try-error' ) {
+		outFileNames = c(outFileNames,paste(memberKey,createdtime,'Web_AGP.png',sep='_'))
+	} else {
+		errCode.sub = c(errCode.sub,'Errr_todo')
 	}
 
 
-        ## TimeBlock 별 분석 --- 
+	Result = vector('list',2)
+	names(Result) = c('outFileNames','errCode.sub')
 
-		data.tmp = data[which(data$sub==p & data$log==1),]
+	if ( is.null(outFileNames) ) outFileNames = NA 
+	if ( is.null(errCode.sub) ) errCode.sub = NA   
 
-		## timeblock ---
-		HMScut.3B = strptime(paste(Sys.Date(),c('00:00:00','06:00:00','12:00:00')),format='%Y-%m-%d %H:%M:%S',tz='GMT')
-		data.tmp$timef = as.POSIXct(strptime(data.tmp$time,format='%H:%M:%S'),tz='GMT')
-		data.tmp$timeCut.3B = NA 
-		for( i in 1:nrow(data.tmp) ) data.tmp$timeCut.3B[i] = sum(round(data.tmp$timef[i],unit='min')>=HMScut.3B)
+	Result[[1]] = outFileNames
+	Result[[2]] = errCode.sub
 
-		
-        out.timeBlockAUC[[p]] = AUCcalculation(x=data.tmp$glucose,group=data.tmp$timeCut.3B,cut=TAR_lev1.Cut)
-        names(out.timeBlockAUC[[p]]) = c('sleep','wakeup','active')
-        out.timeBlockVAR[[p]] = glycemicVariability(x=data.tmp$glucose,group=data.tmp$timeCut.3B,method='%cv')$GV
-        names(out.timeBlockVAR[[p]]) = c('sleep','wakeup','active')
-
-        timeBlock_stat = vector('list',3)
-        timeBlock_stat.comment = vector('list',3)
-
-        timeBlock_stat[[1]] = AUCcalculation(x=data.tmp$glucose,group=data.tmp$timeCut.3B,cut=TAR_lev1.Cut)
-        timeBlock_stat[[2]] = glycemicVariability(x=data.tmp$glucose,group=data.tmp$timeCut.3B,method='%cv')
-#        names(timeBlock_stat[[1]]) = names(timeBlock_stat[[2]][[1]]) = c('sleep','wakeup','active')
-
-        if( max(timeBlock_stat[[1]])>0 ) {
-            timeBlock_stat.comment[[1]] = paste('시간구간 중 ', c('취침시간','기상시간','활동시간')[which.max(timeBlock_stat[[1]])],'에 ',
-             '혈당높음 수준에 해당되는 혈당곡선 밑 면적이 가장 넓습니다.',sep='')
-        } else {
-            timeBlock_stat.comment[[1]] = '연속 혈당이 모두 혈당높음 수준 미만으로 유지되었습니다.'
-        } 
-        if( max(timeBlock_stat[[2]]$GV)> timeBlock_stat[[2]]$GV.assesment ) {
-            timeBlock_stat.comment[[2]] = paste('시간구간 중 ', c('취침시간','기상시간','활동시간')[which.max(timeBlock_stat[[2]])],'에 ',
-            '혈당 변동성이 가장 높으나, 이는 안정적인 수준의 변동성이라고 볼 수 있습니다.',sep='')
-        } else {
-            timeBlock_stat.comment[[2]] = paste('시간구간 중 ', c('취침시간','기상시간','활동시간')[which.max(timeBlock_stat[[1]])],'에 ',
-            '혈당 변동성이 가장 높으며, 이는 권장되는 변동성 수준보다 높아 혈당을 안정화시키기 위한 관리가 필요합니다.',sep='')
-        }
-
-        timeBlock_stat.comment
-
-        timeBlock_stat[[3]] = tapply(data.tmp$glucose,data.tmp$timeCut.3B, mean, na.rm=T)
-
-        timeBlock_stat[[4]] = vector('numeric',length(HMScut.3B)) 
-        for( j in 1:length(HMScut.3B) ) {
-            x.tmp = tapply(data.tmp[which(data.tmp$timeCut.3B==j),]$glucose, data.tmp[which(data.tmp$timeCut.3B==j),]$timeCut.15M, median, na.rm=T)
-#            timeBlock_stat[[4]][j] = sd(x.tmp)
-            print(paste('--',j,'--'))
-            print(sd(x.tmp))
-            print(sd(x.tmp)/mean(x.tmp)*100)
-        }
-
-
-
-    }
-	## function list ##
-	AUCcalculation = function(x, group, cut) {
-
-		x = ifelse(x<cut,cut,x)
-		areaSum = tapply(x,group,function(x){ sum(x-cut) })
-		groupN = tapply(x,group,function(x){ sum(!is.na(x)) })
-		areaAvg = areaSum/groupN
-
-		max.group = names(areaAvg)[which.max(areaAvg)]
-
-		return( areaAvg ) 
-	}
-
-	glycemicVariability = function(x, group, method) {
-
-		if(method=='%cv'){
-			GV = tapply(x, group, function(x){ sd(x)/mean(x) *100 }) 
-			GV.assesment = 36
-		} else if(method=='sd'){
-			GV = tapply(x, group, function(x){ sd(x) })
-			GV.assesment = tapply(x, group, function(x){ mean(x)/3 })
-		}
-		return(list(GV=GV,GV.assesment=GV.assesment))
-	}
+	return( Result )
 
 }
