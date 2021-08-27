@@ -62,12 +62,12 @@ Libre_x_DW_report_onW = function( Target, FinalDate, inFileName, method, path0, 
 	}
 
 
-	### step2 =============================================================================##
-	### 연속혈당 통계분석 및 범위내 시간 
 	setwd(path0) ## 이미지 파일 경로 설정 
 
+	### step2 =============================================================================##
 	### 연속혈당 통계분석 및 범위내시간 
-	section1.tmp = try(create_GlucoseStat(data=AGPdata,Target=Target,memberKey=memberKey,createdtime=createdtime,mod=mod), silent=T)
+	
+	section1.tmp = try(create_GlucoseStat(data=AGPdata,Target=Target,memberKey=memberKey,createdtime=createdtime,mod=mod,TIR.detail.opt=3), silent=T)
 	# 에러 확인용 ****************************************************************************
 	if ( class(section1.tmp)=='try-error' ) {
 #		cat('[에러] 알 수 없는 이유로 리브레 연속혈당 분석이 종료되었습니다.\n')
@@ -80,11 +80,9 @@ Libre_x_DW_report_onW = function( Target, FinalDate, inFileName, method, path0, 
 		TIRstat = section1.tmp$TIRstat
 	}
 
-####################### 여기까지 완료 210714 
 
 	### step3 =============================================================================##
 	### 24시간 혈당패턴 확인
-	data = AGPdata; unit.glucose='mg.dl'
 
 	section2.tmp = try(create_AGPPatternCheck(data=AGPdata,Target=Target,TargetGoal=TargetGoal,TIRstat=TIRstat,memberKey=memberKey,createdtime=createdtime,mod=mod), silent=T)
 	# 에러 확인용 ****************************************************************************
