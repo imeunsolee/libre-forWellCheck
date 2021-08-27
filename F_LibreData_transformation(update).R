@@ -131,7 +131,7 @@ LibreData_transformation = function( inFileName, FinalDate ) {
 
         }
 
-		break ## 웰체크다이어트프로젝트용 ## 
+#		break ## 웰체크다이어트프로젝트용 ## / todo ( 확인해보기 )
 
 		## part2 ## 
 
@@ -235,7 +235,7 @@ LibreData_transformation = function( inFileName, FinalDate ) {
 	### output =============================================================================##
 #	out.sub = 1 # ver1.0 #
 	if ( mod !=1 ) {
-		out.sub = c(1,2) # ver2.0 # //최대 2개 기간까지만 출력하도록 제한 ##
+		out.sub = c(1,2) # ver2.0 # //최대 2개 기간까지만 출력하도록 제한 ## 
 	} else {
 		out.sub = 1 
 	}

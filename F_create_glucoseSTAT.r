@@ -799,6 +799,8 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 #		nrow=5,ncol=4,layout_matrix=rbind(c(1,1,1,2),c(NA,NA,NA,3),NA,c(4,5,NA,6),c(NA,NA,NA,6)),
 #		widths=unit(c(160,200,36,480),'points'),heights=unit(c(26,26,10,sum(tab3.height),(360-sum(tab3.height))),'points'))
 
+	### output =============================================================================##
+
 	CairoPNG(filename=paste(memberKey,createdtime,'Web_StatandTIR.png',sep='_'),family='NotoSansCJKkrR',scale=1/0.32,bg='white',width=1168,height=1100,unit='px',dpi=96)
 
 	LibreReport_StatandTIR_forWeb = try(grid.arrange(grobs=list(tableGrob('연속혈당 통계분석',theme=subTitle.theme_forWeb,cols=NULL,rows=NULL,widths=unit(519,'points'),heights=unit(26,'points')),
@@ -822,8 +824,6 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 		errCode.sub = c(errCode.sub,'Errr_201')
 	}
 
-
-	### output =============================================================================##
 
 	## 방법 1 ## 
 	Result = vector('list',4)
