@@ -50,6 +50,17 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 		)
 	)
 
+	subTitle.theme_forApp = ttheme_minimal(base_family='NotoSansCJKkrB', 
+		core = list(bg_params=list(fill='#000000',col=NA),
+					fg_params=list(hjust=0,x=0.01,col='#ffffff',
+					fontsize=25,fontface='bold'))
+	)
+	remark.theme_forApp = ttheme_minimal(base_family='NotoSansCJKkrR',
+		core = list(bg_params=list(fill=NA,col=NA),
+					fg_params=list(hjust=0,x=0.01,vjust=0.5,col='#808285',
+					fontsize=17,fontface='plain'))
+	)	
+
 
 	### step1 =============================================================================##
 	## out.Goal : 기본정보 ## todo / 후순위
@@ -245,76 +256,72 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 	}
 
 
-	## 혈당통계 결과 출력 ##
+	## 혈당통계 결과 출력 ## 
+	tab1_row1a = data.frame(matrix(NA,nrow=2,ncol=5))
+	tab1_row1b = data.frame(matrix(NA,nrow=1,ncol=2))
+	tab1_row2a = data.frame(matrix(NA,nrow=2,ncol=5))
+	tab1_row2b = data.frame(matrix(NA,nrow=1,ncol=2))
+	tab1_row3a = data.frame(matrix(NA,nrow=2,ncol=5))
+	tab1_row3b = data.frame(matrix(NA,nrow=1,ncol=2))
+	tab1_row4a = data.frame(matrix(NA,nrow=2,ncol=5))
+	tab1_row4b = data.frame(matrix(NA,nrow=1,ncol=2))
 
-	tab1_row1a = data.frame(matrix(NA,nrow=2,ncol=6))
-	tab1_row1b = data.frame(matrix(NA,nrow=1,ncol=3))
-	tab1_row2a = data.frame(matrix(NA,nrow=2,ncol=6))
-	tab1_row2b = data.frame(matrix(NA,nrow=1,ncol=3))
-	tab1_row3a = data.frame(matrix(NA,nrow=2,ncol=6))
-	tab1_row3b = data.frame(matrix(NA,nrow=1,ncol=3))
-	tab1_row4a = data.frame(matrix(NA,nrow=2,ncol=6))
-	tab1_row4b = data.frame(matrix(NA,nrow=1,ncol=3))
+	tab2_colname = data.frame(matrix(NA,nrow=1,ncol=1))
+	tab2_row1 = data.frame(matrix(NA,nrow=2,ncol=2))
+	tab2_row2 = data.frame(matrix(NA,nrow=2,ncol=2))
 
-	tab1_row1a[1,1] = '평균 혈당'
-	tab1_row1a[2,1] = ''
-	tab1_row2a[1,1] = '혈당관리표시'
-	tab1_row2a[2,1] = 'GMI(단일)' 
-	tab1_row3a[1,1] = '혈당변동계수'
-	tab1_row3a[2,1] = 'cv%'
-	tab1_row4a[1,1] = '혈당표준편차'
-	tab1_row4a[2,1] = ''
-	tab1_row1a[,3] = c('이번',round(out.STAT[[1]][1],0))
-	tab1_row2a[,3] = c('이번',round(out.STAT[[1]][2],1))
-	tab1_row3a[,3] = c('이번',round(out.STAT[[1]][3],1))
-	tab1_row4a[,3] = c('이번',round(out.STAT[[1]][4],0))
+	tab1_row1a[,1] = ''
+	tab1_row1a[1,2] = '평균 혈당'
+	tab1_row1a[2,2] = ''
+	tab1_row2a[,2] = ''
+	tab1_row2a[1,2] = '혈당관리표시'
+	tab1_row2a[2,2] = 'GMI(단일)'
+	tab1_row3a[,1] = '' 
+	tab1_row3a[1,2] = '혈당변동계수'
+	tab1_row3a[2,2] = 'cv%'
+	tab1_row4a[,1] = ''
+	tab1_row4a[1,2] = '혈당표준편차'
+	tab1_row4a[2,2] = ''
+
+	tab1_row1a[,4] = c('이번',round(out.STAT[[1]][1],0))
+	tab1_row2a[,4] = c('이번',round(out.STAT[[1]][2],1))
+	tab1_row3a[,4] = c('이번',round(out.STAT[[1]][3],1))
+	tab1_row4a[,4] = c('이번',round(out.STAT[[1]][4],0))
 	
-	tab1_row1a[2,4] = ' mg/dL'
-	tab1_row2a[2,4] = ' %'
-	tab1_row3a[2,4] = ' %'
-	tab1_row4a[2,4] = ' mg/dL'	
-	tab1_row1a[1,4] = ''
-	tab1_row2a[1,4] = ''
-	tab1_row3a[1,4] = ''
-	tab1_row4a[1,4] = ''
+	tab1_row1a[2,5] = ' mg/dL'
+	tab1_row2a[2,5] = ' %'
+	tab1_row3a[2,5] = ' %'
+	tab1_row4a[2,5] = ' mg/dL'	
+	tab1_row1a[1,5] = ''
+	tab1_row2a[1,5] = ''
+	tab1_row3a[1,5] = ''
+	tab1_row4a[1,5] = ''
 
-	tab1_row1a[,5]=''
-	tab1_row2a[,5]=''
-	tab1_row3a[,5]=''
-	tab1_row4a[,5]=''
-	tab1_row3a[,6]=''
-	tab1_row4a[,6]=''
-	tab1_row3b[3]=''
-	tab1_row4b[3]=''
 	
 	## 목표값 달성 여부 체크 ## 
-	tab1_row1b[1] = ''
-	tab1_row2b[1] = ''
-	tab1_row3b[1] = ''
-	tab1_row4b[1] = ''
-	tab1_row1b[2] = '88-116 이내 권장합니다.'
-	tab1_row4b[2] = '10-26 이내 권장합니다.'
+	tab1_row1b[1,] = c('','88-116 이내 권장합니다.')
+	tab1_row4b[1,] = c('','10-26 이내 권장합니다.')
 	if ( out.STAT[[1]][2]>=out.Goal[[4]][1] ) {
 		tab1_row2a.bgcol = '#FFF6F9'
 		tab1_row2a.ftcol = '#FF2525'
 		tab1_row2b.ftcol = '#000000'
-		tab1_row2b[2] = paste(out.Goal[[4]][1],'% 미만으로 줄여야합니다.',sep='')
+		tab1_row2b[1,] = c('',paste(out.Goal[[4]][1],'% 미만으로 줄여야합니다.',sep=''))
 	} else {
 		tab1_row2a.bgcol = '#F7F8F9'
 		tab1_row2a.ftcol = '#000000'
 		tab1_row2b.ftcol = '#808285'
-		tab1_row2b[2] = paste(out.Goal[[4]][1],'% 미만 달성했습니다.',sep='')
+		tab1_row2b[1,] = c('',paste(out.Goal[[4]][1],'% 미만 달성했습니다.',sep=''))
 	}
 	if ( out.STAT[[1]][3]>out.Goal[[4]][2] ) {
 		tab1_row3a.bgcol = '#FFF6F9'
 		tab1_row3a.ftcol = '#FF2525'
 		tab1_row3b.ftcol = '#000000'
-		tab1_row3b[2] = paste(out.Goal[[4]][2],'% 이하로 줄여야합니다.',sep='')
+		tab1_row3b[1,] = c('',paste(out.Goal[[4]][2],'% 이하로 줄여야합니다.',sep=''))
 	} else {
 		tab1_row3a.bgcol = '#F7F8F9'
 		tab1_row3a.ftcol = '#000000'
 		tab1_row3b.ftcol = '#808285'
-		tab1_row3b[2] = paste(out.Goal[[4]][2],'% 이하 달성했습니다.',sep='')
+		tab1_row3b[1,] = c('',paste(out.Goal[[4]][2],'% 이하 달성했습니다.',sep=''))
 	}
 
 
@@ -322,164 +329,187 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 	if ( mod==2 ) {
 		
 		Stat.subTitle.remark = paste('과거 분석기간: ',format(min(data$date[data$sub==2]),'%Y년 %m월 %d일'),'-',format(max(data$date[data$sub==2]),'%Y년 %m월 %d일'),sep='')
-		tab1_row1a[,2] = c('과거',round(out.STAT[[2]][1],0))
-		tab1_row2a[,2] = c('과거',round(out.STAT[[2]][2],1))
-		tab1_row3a[,2] = c('과거',round(out.STAT[[2]][3],1))
-		tab1_row4a[,2] = c('과거',round(out.STAT[[2]][4],0))
+		tab1_row1a[,3] = c('과거',round(out.STAT[[2]][1],0))
+		tab1_row2a[,3] = c('과거',round(out.STAT[[2]][2],1))
+		tab1_row3a[,3] = c('과거',round(out.STAT[[2]][3],1))
+		tab1_row4a[,3] = c('과거',round(out.STAT[[2]][4],0))
 
-		tab1_row1a[1,6] = '비교'
-		tab1_row1a[2,6] = ifelse( out.STAT[[1]][1]<out.STAT[[2]][1],
+		tab2_colname[1] = '이전 분석기간에 비해,'
+		tab2_row1[1,1] = ifelse( out.STAT[[1]][1]<out.STAT[[2]][1],
 									paste('▼ ',round(out.STAT[[2]][1]-out.STAT[[1]][1],0),sep=''),
 									paste('▲ ',round(out.STAT[[1]][1]-out.STAT[[1]][1],0),sep=''))
-		tab1_row1b[3] = '이전 분석기간에 비해,'
-		tab1_row2a[1,6] = '비교'
-		tab1_row2a[2,6] = ifelse( out.STAT[[1]][2]<out.STAT[[2]][2],
+		tab2_row1[1,2] = ' mg/dL'
+		tab2_row1[2,] = ''
+
+		tab2_row2[1,1] = ifelse( out.STAT[[1]][2]<out.STAT[[2]][2],
 									paste('▼ ',round(out.STAT[[2]][2]-out.STAT[[1]][2],1),sep=''),
 									paste('▲ ',round(out.STAT[[1]][2]-out.STAT[[2]][2],1),sep=''))
-		tab1_row2b[3] = '이전 분석기간에 비해,'
+		tab2_row2[1,2] = ' %P'
+		tab2_row2[2,] = ''
 
-		tab2 = data.frame(matrix(NA,nrow=3,ncol=1))
-		tab2[1,] = '예측당화혈색소(3개월누적)'
-		tab2[2,] = format(out.Goal[[1]][2],'%Y년 %m월 %d일 기준')
+		tab3_row1a = data.frame(matrix(NA,nrow=2,ncol=1))
+		tab3_row1b = data.frame(matrix(NA,nrow=1,ncol=2))
+		tab3_row1a[1,1] = '예측당화혈색소(3개월누적)'
+		tab3_row1a[2,1] = format(out.Goal[[1]][2],'%Y년 %m월 %d일 기준')
 		eA1c.range = sort(seq(max(data[which(data$sub==1),]$date), by='-89 day', length=2)) # 90일전 
-		tab2[3,] = round(eA1ceqn(x=mean(data[which(data$date>=eA1c.range[1] & data$date<=eA1c.range[2] & data$log==1),]$glucose,na.rm=T),unit.glucose=unit.glucose),1)
-		if ( tab2[3,] >= out.Goal[[4]][1] ) {
-			tab2.bgcol = '#FFF6F9'
-			tab2.ftcol = '#FF2525'
+		tab3_row1b[1,1] = round(eA1ceqn(x=mean(data[which(data$date>=eA1c.range[1] & data$date<=eA1c.range[2] & data$log==1),]$glucose,na.rm=T),unit.glucose=unit.glucose),1)
+		if ( tab3_row1b[1,1] >= out.Goal[[4]][1] ) {
+			tab3_row1a.bgcol = '#FFF6F9'
+			tab3_row1a.ftcol = '#FF2525'
 		} else {
-			tab2.bgcol = '#F7F8F9'
-			tab2.ftcol = '#000000'			
+			tab3_row1a.bgcol = '#F7F8F9'
+			tab3_row1a.ftcol = '#000000'			
 		}
-		tab2[3,] = paste(tab2[3,],' %',sep='')
+		tab3_row1b[1,2] = ' %'
 
 	} else {
 
-		Stat.subTitle.remark = 
+		Stat.subTitle.remark = ''
 
-		tab1_row1a[,2] = ''
-		tab1_row2a[,2] = ''
-		tab1_row3a[,2] = ''
-		tab1_row4a[,2] = ''
-		tab1_row1a[1,6] = ''
-		tab1_row1a[2,6] = ''
-		tab1_row1b[3] = ''
-		tab1_row2a[1,6] = ''
-		tab1_row2a[2,6] = ''
-		tab1_row2b[3] = ''
-		tab2 = data.frame(matrix(NA,nrow=3,ncol=1))
-		tab2[1,] = ''
-		tab2[2,] = ''
-		tab2[3,] = ''
+		tab1_row1a[,3] = ''
+		tab1_row2a[,3] = ''
+		tab1_row3a[,3] = ''
+		tab1_row4a[,3] = ''
 
-		tab2.bgcol = NA 
-		tab2.ftcol = NA 
+		tab2_colname[1] = ''
+		tab2_row1[1,] = ''
+		tab2_row1[2,] = ''
+		tab2_row2[1,] = '' 
+		tab2_row2[2,] = ''
+		tab3_row1a = data.frame(matrix(NA,nrow=2,ncol=1))
+		tab3_row1b = data.frame(matrix(NA,nrow=1,ncol=2))
+		tab3_row1a[1,] = ''
+		tab3_row1a[2,] = ''
+		tab3_row1b[1,] = ''
+
+		tab3_row1a.bgcol = NA 
+		tab3_row1a.ftcol = NA 
+
 	}
 
-	## 출력 ## 
-	tab1_row1a.theme = ttheme_minimal(base_family='NotoSansCJKkrR',
-		core = list(bg_params=list(fill=c(rep('#F7F8F9',10),rep(NA,2)),col=NA),
-					fg_params=list(hjust=rep(c(0,0,0,0,0,0),each=2),x=rep(c(0.01,0.01,0.01,0.01,0.01,0.1),each=2),vjust=rep(c(0.5,0.8),6),col='#000000',
-					fontsize=c(c(13.5,13),c(12,13),c(12,14),c(12,11),c(12,11),c(12,13.5)))
-	#				fontface=c(c('bold','plain'),c('plain','plain'),c('plain','bold'),c('plain','plain'),c('plain','plain'),c('plain','bold')))
-		)
+	## 출력 ##
+	## TABLE1 : 혈당통계표 ## 
+	# theme # 
+	tab1_row_a.theme = ttheme_minimal(base_family='NotoSansCJKkrR',
+		core = list(bg_params=list(fill='#F7F8F9',col=NA),
+					fg_params=list(hjust=rep(c(0,0,0,0,0),each=2),x=rep(c(0.01,0.01,0.01,0.01,0.01),each=2),vjust=rep(c(0.5,0.8),5),col='#000000',
+					fontsize=c(c(1,1),c(13.5,13),c(12,14),c(12,14),c(12,10))))
 	)
-	tab1_row1a.theme$core$fg_params$fontfamily = rep('NotoSansCJKkrR',12)
-	tab1_row1a.theme$core$fg_params$fontfamily[c(1,2,6,12)] = 'NotoSansCJKkrB'
-#	tab1_row1a = data.frame(tab1_row1a)
-#	tab1_row1a[2,1] = ''  # NA 위치가 고정된게 아님 
-	out.tab1_row1a = tableGrob(tab1_row1a,theme=tab1_row1a.theme,cols=NULL,rows=NULL,
-#		widths=unit(c(150,50,50,50,200),'points'),heights=unit(c(26,26),'points'))
-		widths=unit(c(120,70,40,60,70,159),'points'),heights=unit(c(26,26),'points'))
+	tab1_row_a.theme$core$fg_params$fontfamily = rep('NotoSansCJKkrR',10)
+	tab1_row_a.theme$core$fg_params$fontfamily[c(3,4,8)] = 'NotoSansCJKkrB'
+	tab1_row_a.theme$core$fg_params$col = rep('#000000',10)
 
-	tab1_row1b.theme = ttheme_minimal(base_family='NotoSansCJKkrR',
-		core = list(bg_params=list(fill=c('#F7F8F9','#F7F8F9',NA),col=NA),
-					fg_params=list(hjust=c(0,-0.05),x=0.01,vjust=0,col='#808285',fontsize=11,fontface='plain')
-		)
+	tab1_row_b.theme = ttheme_minimal(base_family='NotoSansCJKkrR',
+		core = list(bg_params=list(fill='#F7F8F9',col=NA),
+					fg_params=list(hjust=0,x=0,vjust=0,col='#808285',fontsize=11,fontface='plain'))
 	)
-	out.tab1_row1b = tableGrob(tab1_row1b,theme=tab1_row1b.theme,cols=NULL,rows=NULL,
-		widths=unit(c(190,170,159),'points'),heights=unit(26,'points'))
 
-	tab1_row2a.theme = ttheme_minimal(base_family='NotoSansCJKkrR',
-		core = list(bg_params=list(fill=c(rep(tab1_row2a.bgcol,10),rep(NA,2)),col=NA),
-					fg_params=list(hjust=rep(c(0,0,0,0,0,0),each=2),x=rep(c(0.01,0.01,0.01,0.01,0.01,0.1),each=2),vjust=rep(c(0.5,0.8),6),col=c(rep('#000000',5),tab1_row2a.ftcol,rep('#000000',6)),
-					fontsize=c(c(13.5,13),c(12,13),c(12,14),c(12,11),c(12,11),c(12,13.5)))
-#					fontface=c(c('bold','plain'),c('plain','plain'),c('plain','bold'),c('plain','plain'),c('plain','bold')))
-		)
+	# TABLE # 
+	out.tab1_row1a = tableGrob(tab1_row1a,theme=tab1_row_a.theme,cols=NULL,rows=NULL,
+		widths=unit(c(5,132,77,57,132),'points'),heights=unit(c(33,26),'points'))
+
+	out.tab1_row1b = tableGrob(tab1_row1b,theme=tab1_row_b.theme,cols=NULL,rows=NULL,
+		widths=unit(c(214,189),'points'),heights=unit(26,'points'))
+
+	tab1_row_a.theme$core$bg_params$fill = tab1_row2a.bgcol
+	tab1_row_a.theme$core$fg_params$col[8] = tab1_row2a.ftcol
+	out.tab1_row2a = tableGrob(tab1_row2a,theme=tab1_row_a.theme,cols=NULL,rows=NULL,
+		widths=unit(c(5,132,77,57,132),'points'),heights=unit(c(33,26),'points'))
+
+	tab1_row_b.theme$core$bg_params$fill = tab1_row2a.bgcol
+	tab1_row_b.theme$core$fg_params$col = tab1_row2b.ftcol
+	out.tab1_row2b = tableGrob(tab1_row2b,theme=tab1_row_b.theme,cols=NULL,rows=NULL,
+		widths=unit(c(214,189),'points'),heights=unit(26,'points'))
+
+	tab1_row_a.theme$core$bg_params$fill = tab1_row3a.bgcol
+	tab1_row_a.theme$core$fg_params$col[8] = tab1_row3a.ftcol
+	out.tab1_row3a = tableGrob(tab1_row3a,theme=tab1_row_a.theme,cols=NULL,rows=NULL,
+		widths=unit(c(5,132,77,57,132),'points'),heights=unit(c(33,26),'points'))
+
+	tab1_row_b.theme$core$bg_params$fill = tab1_row3a.bgcol
+	tab1_row_b.theme$core$fg_params$col = tab1_row3b.ftcol
+	out.tab1_row3b = tableGrob(tab1_row3b,theme=tab1_row_b.theme,cols=NULL,rows=NULL,
+		widths=unit(c(214,189),'points'),heights=unit(26,'points'))
+
+	tab1_row_a.theme$core$bg_params$fill = '#F7F8F9'
+	tab1_row_a.theme$core$fg_params$col[8] = '#000000'
+	out.tab1_row4a = tableGrob(tab1_row4a,theme=tab1_row_a.theme,cols=NULL,rows=NULL,
+		widths=unit(c(5,132,77,57,132),'points'),heights=unit(c(33,26),'points'))
+
+	tab1_row_b.theme$core$bg_params$fill = '#F7F8F9'
+	tab1_row_b.theme$core$fg_params$col = '#808285'
+	out.tab1_row4b = tableGrob(tab1_row4b,theme=tab1_row_b.theme,cols=NULL,rows=NULL,
+		widths=unit(c(214,189),'points'),heights=unit(26,'points'))
+
+	# ADD LINE # 
+	out.tab1_row1a = gtable_add_grob(out.tab1_row1a,grobs=segmentsGrob(x0=unit(0,'npc'),y0=unit(1,'npc'),x1=unit(1,'npc'),y1=unit(1,'npc'),gp=gpar(lwd=1)),t=1,l=1,r=5)
+	
+	out.tab1_row2a = gtable_add_grob(out.tab1_row2a,grobs=segmentsGrob(x0=unit(0,'npc'),y0=unit(1,'npc'),x1=unit(1,'npc'),y1=unit(1,'npc'),gp=gpar(lwd=1)),t=1,l=1,r=5)
+
+	out.tab1_row3a = gtable_add_grob(out.tab1_row3a,grobs=segmentsGrob(x0=unit(0,'npc'),y0=unit(1,'npc'),x1=unit(1,'npc'),y1=unit(1,'npc'),gp=gpar(lwd=1)),t=1,l=1,r=5)
+
+	out.tab1_row4a = gtable_add_grob(out.tab1_row4a,grobs=segmentsGrob(x0=unit(0,'npc'),y0=unit(1,'npc'),x1=unit(1,'npc'),y1=unit(1,'npc'),gp=gpar(lwd=1)),t=1,l=1,r=5)
+		
+	out.tab1_row4b = gtable_add_grob(out.tab1_row4b,grobs=segmentsGrob(x0=unit(0,'npc'),y0=unit(0,'npc'),x1=unit(1,'npc'),y1=unit(0,'npc'),gp=gpar(lwd=1)),t=1,l=1,r=2,z=3)
+
+	## TABLE2 : 비교표 ## 
+	# theme # 
+	tab2_colname.theme = ttheme_minimal(base_family='NotoSansCJKkrR',
+		core = list(bg_params=list(fill=NA,col=NA),
+					fg_params=list(hjust=0,x=0.01,vjust=0.5,col='#000000',
+					fontsize=12))
+	)	
+	tab2_row.theme = ttheme_minimal(base_family='NotoSansCJKkrR',
+		core = list(bg_params=list(fill=NA,col=NA),
+					fg_params=list(hjust=0,x=0.01,vjust=0.5,col='#000000',
+					fontsize=c(14,10,10,10)))
 	)
-	tab1_row2a.theme$core$fg_params$fontfamily = rep('NotoSansCJKkrR',12)
-	tab1_row2a.theme$core$fg_params$fontfamily[c(1,2,6,12)] = 'NotoSansCJKkrB'
-	out.tab1_row2a = tableGrob(tab1_row2a,theme=tab1_row2a.theme,cols=NULL,rows=NULL,
-		widths=unit(c(120,70,40,60,70,159),'points'),heights=unit(c(26,26),'points'))
+	tab2_row.theme$core$fg_params$fontfamily = c('NotoSansCJKkrB','NotoSansCJKkrR','NotoSansCJKkrR','NotoSansCJKkrR')
 
-	tab1_row2b.theme = ttheme_minimal(base_family='NotoSansCJKkrR',
-		core = list(bg_params=list(fill=c(tab1_row2a.bgcol,tab1_row2a.bgcol,NA),col=NA),
-					fg_params=list(hjust=c(0,-0.05),x=0.01,vjust=0,col=c(tab1_row2b.ftcol,tab1_row2b.ftcol,'#808285'),fontsize=11,fontface='plain')
-		)
+	## TABLE3 : eA1c표 ## 
+	# theme # 
+	tab3_row_a.theme = ttheme_minimal(base_family='NotoSansCJKkrR',
+		core = list(bg_params=list(fill=tab3_row1a.bgcol,col=NA), 
+					fg_params=list(hjust=0,x=0.05,vjust=c(0.5,0),col=c('#000000','#808285'),
+					fontsize=c(13.5,12),fontface='plain'))
 	)
-	out.tab1_row2b = tableGrob(tab1_row2b,theme=tab1_row2b.theme,cols=NULL,rows=NULL,
-		widths=unit(c(190,170,159),'points'),heights=unit(26,'points'))
-
-	tab1_row3a.theme = ttheme_minimal(base_family='NotoSansCJKkrR',
-		core = list(bg_params=list(fill=c(rep(tab1_row3a.bgcol,10),rep(NA,2)),col=NA),
-					fg_params=list(hjust=rep(c(0,0,0,0,0,0),each=2),x=rep(c(0.01,0.01,0.01,0.01,0.01,0.1),each=2),vjust=rep(c(0.5,0.8),5),col=c(rep('#000000',5),tab1_row3a.ftcol,rep('#000000',6)),
-					fontsize=c(c(13.5,13),c(12,13),c(12,14),c(12,11),c(12,11),c(12,13.5)))
-#					fontface=c(c('bold','plain'),c('plain','plain'),c('plain','bold'),c('plain','plain'),c('plain','bold')))
-		)
+	tab3_row_a.theme$core$fg_params$fontfamily = c('NotoSansCJKkrB','NotoSansCJKkrR')
+	tab3_row_b.theme = ttheme_minimal(base_family='NotoSansCJKkrR',
+		core = list(bg_params=list(fill=tab3_row1a.bgcol,col=NA),
+					fg_params=list(hjust=0,x=c(0.2,0.01),vjust=0.5,col=tab3_row1a.ftcol,
+					fontsize=c(14,10),fontface='plain'))
 	)
-	tab1_row3a.theme$core$fg_params$fontfamily = rep('NotoSansCJKkrR',12)
-	tab1_row3a.theme$core$fg_params$fontfamily[c(1,2,6,12)] = 'NotoSansCJKkrB'
-	out.tab1_row3a = tableGrob(tab1_row3a,theme=tab1_row3a.theme,cols=NULL,rows=NULL,
-		widths=unit(c(120,70,40,60,70,159),'points'),heights=unit(c(26,26),'points'))
-
-	tab1_row3b.theme = ttheme_minimal(base_family='NotoSansCJKkrR',
-		core = list(bg_params=list(fill=c(tab1_row3a.bgcol,tab1_row3a.bgcol,NA),col=NA),
-					fg_params=list(hjust=c(0,-0.05),x=0.01,vjust=0,col=tab1_row3b.ftcol,fontsize=11,fontface='plain')
-		)
-	)
-	out.tab1_row3b = tableGrob(tab1_row3b,theme=tab1_row3b.theme,cols=NULL,rows=NULL,
-		widths=unit(c(190,170,159),'points'),heights=unit(26,'points'))
-
-	tab1_row4a.theme = ttheme_minimal(base_family='NotoSansCJKkrR',
-		core = list(bg_params=list(fill=c(rep('#F7F8F9',10),rep(NA,2)),col=NA),
-					fg_params=list(hjust=rep(c(0,0,0,0,0,0),each=2),x=rep(c(0.01,0.01,0.01,0.01,0.01,0.1),each=2),vjust=rep(c(0.5,0.8),6),col='#000000',
-					fontsize=c(c(13.5,13),c(12,13),c(12,14),c(12,11),c(12,11),c(12,13.5)))
-#					fontface=c(c('bold','plain'),c('plain','plain'),c('plain','bold'),c('plain','plain'),c('plain','bold')))
-		)
-	)
-	tab1_row4a.theme$core$fg_params$fontfamily = rep('NotoSansCJKkrR',12)
-	tab1_row4a.theme$core$fg_params$fontfamily[c(1,2,6,12)] = 'NotoSansCJKkrB'
-	out.tab1_row4a = tableGrob(tab1_row4a,theme=tab1_row1a.theme,cols=NULL,rows=NULL,
-		widths=unit(c(120,70,40,60,70,159),'points'),heights=unit(c(26,26),'points'))
-
-	tab1_row4b.theme = ttheme_minimal(base_family='NotoSansCJKkrR',
-		core = list(bg_params=list(fill=c('#F7F8F9','#F7F8F9',NA),col=NA),
-					fg_params=list(hjust=c(0,-0.05),x=0.01,vjust=0,col='#808285',fontsize=11,fontface='plain')
-		)
-	)
-	out.tab1_row4b = tableGrob(tab1_row4b,theme=tab1_row4b.theme,cols=NULL,rows=NULL,
-		widths=unit(c(190,170,159),'points'),heights=unit(26,'points'))
-
-	tab2.theme = ttheme_minimal(base_family='NotoSansCJKkrR',
-		core = list(bg_params=list(fill=tab2.bgcol,col=NA), 
-					fg_params=list(hjust=0,x=0.05,vjust=0.5,col=c('#000000','#808285',tab2.ftcol),fontsize=c(13.5,12,14),fontface=c('bold','plain','bold'))
-		)
-	)
-	tab2.theme$core$fg_params$fontfamily = c('NotoSansCJKkrB','NotoSansCJKkrR','NotoSansCJKkrB')
+	tab3_row_b.theme$core$fg_params$fontfamily = c('NotoSansCJKkrB','NotoSansCJKkrR')
 
 
-	## stat ## 
-	out.tab1_forWeb = grid.arrange(grobs=list(out.tab1_row1a,out.tab1_row1b,out.tab1_row2a,out.tab1_row2b,out.tab1_row3a,out.tab1_row3b,out.tab1_row4a,out.tab1_row4b),
-		nrow=8,ncol=1,layout_matrix(rbind(1,2,3,4,5,6,7,8)),widths=unit(519,'points'),heights=unit(rep(c(52,26),4),'points'))
-	out.tab2_forWeb = tableGrob(tab2,theme=tab2.theme,cols=NULL,rows=NULL,
-		widths=unit(321,'points'),heights=unit(c(26,26,26),'points'))
-	out.tab2_forWeb = gtable_add_grob(out.tab2_forWeb,grobs=rectGrob(gp=gpar(fill=NA,col=tab2.ftcol)),t=1,b=3,l=1,r=1)
+	## STAT TABLE ## 
+	out.tab1_forWeb = grid.arrange(grobs=list(
+		out.tab1_row1a,out.tab1_row1b,out.tab1_row2a,out.tab1_row2b,out.tab1_row3a,out.tab1_row3b,out.tab1_row4a,out.tab1_row4b),
+		nrow=8,ncol=1,layout_matrix(rbind(1,2,3,4,5,6,7,8)),widths=unit(403,'points'),heights=unit(rep(c(59,26),4),'points'))
+
+	out.tab2_forWeb = grid.arrange(grobs=list(
+		tableGrob(tab2_colname,theme=tab2_colname.theme,cols=NULL,rows=NULL,widths=unit(140,'points'),heights=unit(33,'points')),
+		tableGrob(tab2_row1,theme=tab2_row.theme,cols=NULL,rows=NULL,widths=unit(c(40,100),'points'),heights=unit(c(26,26),'points')),
+		tableGrob(tab2_colname,theme=tab2_colname.theme,cols=NULL,rows=NULL,widths=unit(140,'points'),heights=unit(33,'points')),
+		tableGrob(tab2_row2,theme=tab2_row.theme,cols=NULL,rows=NULL,widths=unit(c(40,100),'points'),heights=unit(c(26,26),'points'))),
+		nrow=4,ncol=1,layout_matrix(rbind(1,2,3,4)),widths=unit(140,'points'),heights=unit(rep(c(26,52),2),'points'))
+
+	out.tab3_forWeb = grid.arrange(grobs=list(
+		tableGrob(tab3_row1a,theme=tab3_row_a.theme,cols=NULL,rows=NULL,widths=unit(258,'points'),heights=unit(c(33,26),'points')),
+		tableGrob(tab3_row1b,theme=tab3_row_b.theme,cols=NULL,rows=NULL,widths=unit(c(58,200),'points'),heights=unit(26,'points'))),
+		nrow=2,ncol=1,layout_matirx(rbind(1,2)),widths=unit(258,'points'),heights=unit(c(59,26),'points'))
+
+	out.tab3_forWeb = gtable_add_grob(out.tab3_forWeb,grobs=rectGrob(gp=gpar(fill=NA,col=tab3_row1a.ftcol)),t=1,b=2,l=1,r=1)
 
 
-#	LibreReport_Stat_forWeb = grid.arrange(grobs=list(tableGrob('연속혈당 통계분석',theme=subTitle.theme_forWeb,cols=NULL,rows=NULL,widths=unit(876,'points'),heights=unit(26,'points')),
-#		tableGrob(Stat.subTitle.remark,theme=remark.theme_forWeb,cols=NULL,rows=NULL,widths=unit(876,'points'),heights=unit(26,'points')),
-#		out.tab1_forWeb,out.tab2_forWeb),
-#		nrow=5,ncol=3,layout_matrix=rbind(c(1,1,1),c(2,2,2),NA,c(3,NA,4),c(3,NA,NA)),
-#		widths=unit(c(519,36,321),'points'),heights=unit(c(26,26,10,78,sum(rep(78,3))),'points'))
+	## todo app ## doing 211006
+	LibreReport_Stat_forApp = try(grid.arrange(grobs=list(
+		tableGrob('연속혈당 통계분석',theme=subTitle.theme_forApp,cols=NULL,rows=NULL,widths=unit(512,'points'),heights=unit(50,'points')),
+		tableGrob(Stat.subTitle.remark,theme=remark.theme_forWeb,cols=NULL,rows=NULL,widths=unit(512,'points'),heights=unit(28,'points')),
+		out.tab1_forWeb,out.tab2_forWeb),
+		nrow=5,ncol=3,layout_matrix=rbind(c(1,1,1),c(2,2,2),NA,c(3,NA,4),c(3,NA,NA)),
+		widths=unit(c(519,36,321),'points'),heights=unit(c(50,28,10,78,sum(rep(78,3))),'points')),silent=T)
+
 
 	### step3 =============================================================================##
 	## out.TIR : 범위내시간 TIR ##
@@ -535,81 +565,70 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 
 	## TIR 전체 테이블 ##
 
-	tab3 = data.frame(matrix(NA,nrow=15,ncol=3))
-	tab3.lab = vector('character',15)
-	tab3.lab[which(c(1:15)%%3==1)] = ifelse(grepl('TAR',names(out.TIR[[1]][[1]])),'높은 고혈당',ifelse(grepl('TBR',names(out.TIR[[1]][[1]])),'낮은 저혈당',ifelse(grepl('TIR',names(out.TIR[[1]][[1]])),'목표범위','')))
-	tab3.lab[which(c(1:15)%%3==1)] = ifelse(grepl('2',names(out.TIR[[1]][[1]])),paste('매우',tab3.lab[which(c(1:15)%%3==1)]),gsub('높은 |낮은 ','',tab3.lab[which(c(1:15)%%3==1)]))
+	tab4 = data.frame(matrix(NA,nrow=15,ncol=3))
+	tab4.lab = vector('character',15)
+	tab4.lab[which(c(1:15)%%3==1)] = ifelse(grepl('TAR',names(out.TIR[[1]][[1]])),'높은 고혈당',ifelse(grepl('TBR',names(out.TIR[[1]][[1]])),'낮은 저혈당',ifelse(grepl('TIR',names(out.TIR[[1]][[1]])),'목표범위','')))
+	tab4.lab[which(c(1:15)%%3==1)] = ifelse(grepl('2',names(out.TIR[[1]][[1]])),paste('매우',tab4.lab[which(c(1:15)%%3==1)]),gsub('높은 |낮은 ','',tab4.lab[which(c(1:15)%%3==1)]))
 
-	tab3.lab[which(c(1:15)%%3==2)] = rev(lab.add)
-	tab3[,2] = tab3.lab
-	tab3[,1] = rep(c('■','',''),5)
-	tab3[which(c(1:15)%%3==1),3] = paste(round(out.TIR[[1]][[1]],0),' %',sep='')
-	tab3[which(c(1:15)%%3==2)[c(1,2,4,5)],3] = paste(rev(out.Goal[[5]][[2]])[c(1,2,4,5)],'%미만',sep='')
-	tab3[which(c(1:15)%%3==2)[3],3] = paste(rev(out.Goal[[5]][[2]])[3],'%초과',sep='')
-	tab3[which(c(1:15)%%3==0),3] = ''
-##
-#	tab3 = data.frame(matrix(NA,nrow=10,ncol=3))#data.frame(matrix(NA,nrow=length(!is.na(out.TIR[[1]][[1]]))*2,ncol=3))
-#	tab3.lab = vector('character',10)#vector('character',length(!is.na(out.TIR[[1]][[1]]))*2)
-#	tab3.lab[which(c(1:10)%%2==1)] = ifelse(grepl('TAR',names(out.TIR[[1]][[1]])),'높은 고혈당',ifelse(grepl('TBR',names(out.TIR[[1]][[1]])),'낮은 저혈당',ifelse(grepl('TIR',names(out.TIR[[1]][[1]])),'목표범위','')))
-#	tab3.lab[which(c(1:10)%%2==1)] = ifelse(grepl('2',names(out.TIR[[1]][[1]])),paste('매우',tab3.lab[which(c(1:10)%%2==1)]),gsub('높은 |낮은 ','',tab3.lab[which(c(1:10)%%2==1)]))
+	tab4.lab[which(c(1:15)%%3==2)] = rev(lab.add)
+	tab4[,2] = tab4.lab
+	tab4[,1] = rep(c('■','',''),5)
+	tab4[which(c(1:15)%%3==1),3] = paste(round(out.TIR[[1]][[1]],0),' %',sep='')
+	tab4[which(c(1:15)%%3==2)[c(1,2,4,5)],3] = paste(rev(out.Goal[[5]][[2]])[c(1,2,4,5)],'%미만',sep='')
+	tab4[which(c(1:15)%%3==2)[3],3] = paste(rev(out.Goal[[5]][[2]])[3],'%초과',sep='')
+	tab4[which(c(1:15)%%3==0),3] = ''
 
-#	tab3.lab[which(c(1:10)%%2==0)] = rev(Lab.add)
-#	tab3[,2] = tab3.lab
-#	tab3[,1] = rep(c('■',''),5)
-#	tab3[which(c(1:10)%%2==1),3] = paste(round(out.TIR[[1]][[1]],0),' %',sep='')
-#	tab3[which(c(1:10)%%2==0)[c(1,2,4,5)],3] = paste(rev(out.Goal[[5]][[2]])[c(1,2,4,5)],'%미만',sep='')
-#	tab3[which(c(1:10)%%2==0)[3],3] = paste(rev(out.Goal[[5]][[2]])[3],'%초과',sep='')
 
-	tab3.GoalYN = rep(NA,5) #1 yes 2 no
-	tab3.row = c()
-	tab3.symb.col = c()
+	tab4.GoalYN = rep(NA,5) #1 yes 2 no
+	tab4.row = c()
+	tab4.symb.col = c()
 
 	if( !is.na(TAR_lev2.Goal) ) {
-		tab3.GoalYN[names(out.TIR[[1]][[1]])=='TAR2'] = ifelse(out.TIR[[1]][[1]][names(out.TIR[[1]][[1]])=='TAR2'] >= TAR_lev2.Goal && TAR_lev2.Goal!=0,2,1)
-		tab3.row = c(tab3.row,c(1,2,3))
-		tab3.symb.col = c(tab3.symb.col,'#fcb813')	
+		tab4.GoalYN[names(out.TIR[[1]][[1]])=='TAR2'] = ifelse(out.TIR[[1]][[1]][names(out.TIR[[1]][[1]])=='TAR2'] >= TAR_lev2.Goal && TAR_lev2.Goal!=0,2,1)
+		tab4.row = c(tab4.row,c(1,2,3))
+		tab4.symb.col = c(tab4.symb.col,'#fcb813')	
 	}
 	if( !is.na(TAR_lev1.Goal) ) {
-		tab3.GoalYN[names(out.TIR[[1]][[1]])=='TAR1'] = ifelse(sum(out.TIR[[1]][[1]][grepl('TAR',names(out.TIR[[1]][[1]]))],na.rm=T) >= TAR_lev1.Goal,2,1)
-		tab3.row = c(tab3.row,c(4,5,6))
-		tab3.symb.col = c(tab3.symb.col,'#fff100')	
+		tab4.GoalYN[names(out.TIR[[1]][[1]])=='TAR1'] = ifelse(sum(out.TIR[[1]][[1]][grepl('TAR',names(out.TIR[[1]][[1]]))],na.rm=T) >= TAR_lev1.Goal,2,1)
+		tab4.row = c(tab4.row,c(4,5,6))
+		tab4.symb.col = c(tab4.symb.col,'#fff100')	
 	}
 	if( !is.na(TIR.Goal) ) {
-		tab3.GoalYN[names(out.TIR[[1]][[1]])=='TIR'] = ifelse(out.TIR[[1]][[1]][names(out.TIR[[1]][[1]])=='TIR'] < TIR.Goal,2,1)
-		tab3.row = c(tab3.row,c(7,8,9))	
-		tab3.symb.col = c(tab3.symb.col,'#b6202e')	
+		tab4.GoalYN[names(out.TIR[[1]][[1]])=='TIR'] = ifelse(out.TIR[[1]][[1]][names(out.TIR[[1]][[1]])=='TIR'] < TIR.Goal,2,1)
+		tab4.row = c(tab4.row,c(7,8,9))	
+		tab4.symb.col = c(tab4.symb.col,'#b6202e')	
 	}
 	if( !is.na(TBR_lev1.Goal) ) {
-		tab3.GoalYN[names(out.TIR[[1]][[1]])=='TBR1'] = ifelse(sum(out.TIR[[1]][[1]][grepl('TBR',names(out.TIR[[1]][[1]]))],na.rm=T) >= TBR_lev1.Goal,2,1)
-		tab3.row = c(tab3.row,c(10,11,12))	
-		tab3.symb.col = c(tab3.symb.col,'#d71920')	
+		tab4.GoalYN[names(out.TIR[[1]][[1]])=='TBR1'] = ifelse(sum(out.TIR[[1]][[1]][grepl('TBR',names(out.TIR[[1]][[1]]))],na.rm=T) >= TBR_lev1.Goal,2,1)
+		tab4.row = c(tab4.row,c(10,11,12))	
+		tab4.symb.col = c(tab4.symb.col,'#d71920')	
 	}
 	if( !is.na(TBR_lev2.Goal) ) {
-		tab3.GoalYN[names(out.TIR[[1]][[1]])=='TBR2'] = ifelse(out.TIR[[1]][[1]][names(out.TIR[[1]][[1]])=='TBR2'] >= TBR_lev2.Goal && TBR_lev2.Goal!=0,2,1)
-		tab3.row = c(tab3.row,c(13,14,15))	
-		tab3.symb.col = c(tab3.symb.col,'#40ac49')	
+		tab4.GoalYN[names(out.TIR[[1]][[1]])=='TBR2'] = ifelse(out.TIR[[1]][[1]][names(out.TIR[[1]][[1]])=='TBR2'] >= TBR_lev2.Goal && TBR_lev2.Goal!=0,2,1)
+		tab4.row = c(tab4.row,c(13,14,15))	
+		tab4.symb.col = c(tab4.symb.col,'#40ac49')	
 	}
 
-#	tab3.bgcol = rep(ifelse(tab3.GoalYN==2,'#FFF6F9','#F7F8F9'),each=3)
-	tab3.bgcol = rep(ifelse(tab3.GoalYN==2,'#FFF6F9',NA),each=3)
-	tab3.ftcol = vector('character',15)
-	tab3.ftcol[which(c(1:15)%%3==1)] = ifelse(tab3.GoalYN==2,'#FF2525','#000000')
-	tab3.ftcol[which(c(1:15)%%3==2)] = ifelse(!is.na(tab3.GoalYN),'#000000',NA)
-	tab3.ftcol[which(c(1:15)%%3==0)] = '#000000' 
+#	tab4.bgcol = rep(ifelse(tab4.GoalYN==2,'#FFF6F9','#F7F8F9'),each=3)
+	tab4.bgcol = rep(ifelse(tab4.GoalYN==2,'#FFF6F9',NA),each=3)
+	tab4.ftcol = vector('character',15)
+	tab4.ftcol[which(c(1:15)%%3==1)] = ifelse(tab4.GoalYN==2,'#FF2525','#000000')
+	tab4.ftcol[which(c(1:15)%%3==2)] = ifelse(!is.na(tab4.GoalYN),'#000000',NA)
+	tab4.ftcol[which(c(1:15)%%3==0)] = '#000000' 
 
-	tab3.theme = ttheme_minimal(base_family='NotoSansCJKkrR',
-#		core = list(bg_params=list(fill=tab3.bgcol[!is.na(tab3.bgcol)],col=NA),
-		core = list(bg_params=list(fill=c(rep(NA,length(tab3.row)),rep(tab3.bgcol[!is.na(tab3.bgcol)],2)),col=NA),
-					fg_params=list(hjust=rep(0,length(tab3.row)*3),x=0.01,vjust=0.5,col=c(rep(tab3.symb.col,each=3),rep('#000000',length(tab3.row)),tab3.ftcol[!is.na(tab3.ftcol)]),
-					fontsize=c(rep(20,length(tab3.row)),rep(c(13,12,12),length(tab3.row)/3),rep(c(14,11,11),length(tab3.row)/3)),
-					fontface=c(rep('plain',length(tab3.row)*2),rep(c('bold','plain','plain'),length(tab3.row)/3)))
+	tab4.theme = ttheme_minimal(base_family='NotoSansCJKkrR',
+#		core = list(bg_params=list(fill=tab4.bgcol[!is.na(tab4.bgcol)],col=NA),
+		core = list(bg_params=list(fill=c(rep(NA,length(tab4.row)),rep(tab4.bgcol[!is.na(tab4.bgcol)],2)),col=NA),
+					fg_params=list(hjust=rep(0,length(tab4.row)*3),x=0.01,vjust=0.5,col=c(rep(tab4.symb.col,each=3),rep('#000000',length(tab4.row)),tab4.ftcol[!is.na(tab4.ftcol)]),
+					fontsize=c(rep(14,length(tab4.row)),rep(c(13,12,12),length(tab4.row)/3),rep(c(14,11,11),length(tab4.row)/3)))
 		)
 	)
+	tab4.theme$core$fg_params$fontfamily = c(rep('NotoSansCJKkrR',length(tab4.row)*2),rep(c('NotoSansCJKkrB','NotoSansCJKkrR','NotoSansCJKkrR'),length(tab4.row)/3))
 
-	tab3 = tab3[tab3.row,]
-	tab3.height = rep(22,length(tab3.row))
-	out.tab3_forWeb = tableGrob(tab3,theme=tab3.theme,cols=NULL,rows=NULL,
-		widths=unit(c(20,110,70),'points'),heights=unit(tab3.height,'points'))
+	tab4 = tab4[tab4.row,]
+	tab4.height = rep(22,length(tab4.row))
+	out.tab4_forWeb = tableGrob(tab4,theme=tab4.theme,cols=NULL,rows=NULL,
+		widths=unit(c(20,132,70),'points'),heights=unit(tab4.height,'points'))
 
 
 	## TIR 상세 그래프 ##
@@ -790,7 +809,7 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 	out.TIR.detail[[3]] = grid.arrange(grobs=list(out.TIR.detail[[2]][[1]],out.TIR.detail[[2]][[2]],
 		out.TIR.detail[[2]][[3]],out.TIR.detail[[2]][[4]]),
 		nrow=2,ncol=2,layout_matrix=rbind(c(1,2),c(3,4)),
-		widths=unit(c(240,240),'points'),heights=unit(c(180,180),'points'))
+		widths=unit(c(209,209),'points'),heights=unit(c(165,165),'points'))
 	
 #	LibreReport_TIR_forWeb = grid.arrange(grobs=list(tableGrob('범위 내 시간 (Time in Ranges)',theme=subTitle.theme_forWeb,cols=NULL,rows=NULL,widths=unit(360,'points'),heights=unit(26,'points')),
 #		tableGrob('범위내시간> 시간대별 상세보기',theme=subTitle.theme_forWeb,cols=NULL,rows=NULL,widths=unit(480,'points'),heights=unit(26,'points')),
@@ -802,19 +821,31 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 	### output =============================================================================##
 
 	CairoPNG(filename=paste(memberKey,createdtime,'Web_StatandTIR.png',sep='_'),family='NotoSansCJKkrR',scale=1/0.32,bg='white',width=1168,height=1100,unit='px',dpi=96)
+	
+	layout.mat = matrix(NA,nrow=11,ncol=8)
+	layout.mat[1,] = 1
+	layout.mat[2,] = 2
+	layout.mat[4:6,2:3] = 3
+	layout.mat[4:5,5] = 4
+	layout.mat[4,7] = 5 
+	layout.mat[8,] = c(6,6,6,NA,7,7,7,7)
+	layout.mat[9,5:8] = 8
+	layout.mat[11,] = c(NA,9,10,NA,11,11,11,NA)
 
-	LibreReport_StatandTIR_forWeb = try(grid.arrange(grobs=list(tableGrob('연속혈당 통계분석',theme=subTitle.theme_forWeb,cols=NULL,rows=NULL,widths=unit(519,'points'),heights=unit(26,'points')),
-		tableGrob(Stat.subTitle.remark,theme=remark.theme_forWeb,cols=NULL,rows=NULL,widths=unit(519,'points'),heights=unit(26,'points')),
-		out.tab1_forWeb,
-		out.tab2_forWeb,
-		tableGrob('범위 내 시간 (Time in Ranges)',theme=subTitle.theme_forWeb,cols=NULL,rows=NULL,widths=unit(360,'points'),heights=unit(26,'points')),
-		tableGrob('범위내시간> 시간대별 상세보기',theme=subTitle.theme_forWeb,cols=NULL,rows=NULL,widths=unit(480,'points'),heights=unit(26,'points')),
-		tableGrob('야간: 22-04시 오전: 04-10시 오후: 10-16시 저녁: 16-22시',theme=remark.theme_forWeb,cols=NULL,rows=NULL,widths=unit(480,'points'),heights=unit(26,'points')),
-		out.TIR[[2]],
-		out.tab3_forWeb,
-		out.TIR.detail[[3]]),
-		nrow=11,ncol=6,layout_matrix=rbind(c(1,1,1,1,NA,NA),c(2,2,2,2,NA,NA),NA,c(3,3,3,3,NA,4),c(3,3,3,3,NA,NA),NA,c(5,5,NA,6,6,6),c(NA,NA,NA,7,7,7),NA,c(8,9,NA,10,10,10),c(NA,NA,NA,10,10,10)),
-		widths=unit(c(160,200,36,123,36,321),'points'),heights=unit(c(26,26,10,78,sum(rep(78,3)),29,26,26,10,sum(tab3.height),(360-sum(tab3.height))),'points')),silent=T)
+	LibreReport_StatandTIR_forWeb = try(grid.arrange(grobs=list(
+		tableGrob('연속혈당 통계분석',theme=subTitle.theme_forWeb,cols=NULL,rows=NULL,widths=unit(876,'points'),heights=unit(26,'points')), #1 
+		tableGrob(Stat.subTitle.remark,theme=remark.theme_forWeb,cols=NULL,rows=NULL,widths=unit(876,'points'),heights=unit(26,'points')), #2
+		out.tab1_forWeb, #3
+		out.tab2_forWeb, #4
+		out.tab3_forWeb, #5
+		tableGrob('범위 내 시간 (Time in Ranges)',theme=subTitle.theme_forWeb,cols=NULL,rows=NULL,widths=unit(418,'points'),heights=unit(26,'points')), #6
+		tableGrob('범위내시간> 시간대별 상세보기',theme=subTitle.theme_forWeb,cols=NULL,rows=NULL,widths=unit(438,'points'),heights=unit(26,'points')), #7
+		tableGrob('야간: 22-04시 오전: 04-10시 오후: 10-16시 저녁: 16-22시',theme=remark.theme_forWeb,cols=NULL,rows=NULL,widths=unit(438,'points'),heights=unit(26,'points')), #8
+		out.TIR[[2]], #9 
+		out.tab4_forWeb, #10
+		out.TIR.detail[[3]]), #11
+		nrow=11,ncol=8,layout_matrix=layout.mat,
+		widths=unit(c(15,181,222,20,140,20,258,20),'points'),heights=unit(c(26,26,10,85,85,85*2, 20, 26,26,10,330),'points')),silent=T)
 
 	dev.off() 
 	

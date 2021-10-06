@@ -12,7 +12,6 @@
 Libre_x_DW_report_onW = function( Target, FinalDate, inFileName, method, path0, memberKey ){
 # Libre_x_DW_report_forApp = function( CodeFileName, inFileName, imageFileName=NULL, method ){
 
-
 	### step0 =============================================================================##
 	### Install Package
 #	strt.time = Sys.time()

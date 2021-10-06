@@ -49,7 +49,7 @@ LibreData_transformation = function( inFileName, FinalDate ) {
 				next
 			}
 			line1 = c(line1,unlist(strsplit(lines.tmp[[1]][2],split=',')))
-			if ( length(line1)==18 ) line1 = line1[19] = ''
+			if ( length(line1)==18 ) line1[19] = ''
 			data[(i-2),] = line1
 
 		}
