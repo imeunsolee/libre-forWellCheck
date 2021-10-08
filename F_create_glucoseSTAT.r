@@ -38,8 +38,8 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 	## common theme ##
 
 	subTitle.theme_forWeb = ttheme_minimal(base_family='NotoSansCJKkrB',
-		core = list(bg_params=list(fill=NA,col=NA),
-					fg_params=list(hjust=0,x=0,vjust=0.5,col='#000000',
+		core = list(bg_params=list(fill='#000000',col=NA),
+					fg_params=list(hjust=0,x=0,vjust=0.5,col='#ffffff',
 					fontsize=14.5,fontface='plain')
 		)
 	)
@@ -52,12 +52,12 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 
 	subTitle.theme_forApp = ttheme_minimal(base_family='NotoSansCJKkrB', 
 		core = list(bg_params=list(fill='#000000',col=NA),
-					fg_params=list(hjust=0,x=0.01,col='#ffffff',
+					fg_params=list(hjust=0,x=0,col='#ffffff',
 					fontsize=25,fontface='bold'))
 	)
 	remark.theme_forApp = ttheme_minimal(base_family='NotoSansCJKkrR',
 		core = list(bg_params=list(fill=NA,col=NA),
-					fg_params=list(hjust=0,x=0.01,vjust=0.5,col='#808285',
+					fg_params=list(hjust=0,x=0,vjust=0.5,col='#808285',
 					fontsize=17,fontface='plain'))
 	)	
 
@@ -370,106 +370,179 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 	## 출력 ##
 	## TABLE binding : 혈당통계표 ## 
 	# theme # 
-	statTab_a.theme = ttheme_minimal(base_family='NotoSansCJKkrR',
+	statTab_a.theme_forWeb = ttheme_minimal(base_family='NotoSansCJKkrR',
 		core = list(bg_params=list(fill='#F7F8F9',col=NA),
 					fg_params=list(hjust=rep(c(0,0,0,0,0,0),each=2),x=rep(c(0.01,0.01,0.01,0.01,0.01,0.01),each=2),vjust=rep(c(0.5,0.8),6),col='#000000',
 					fontsize=c(c(1,1),c(13.5,13),c(12,14),c(12,16),c(12,10),c(12,14))))
 	)
-	statTab_a.theme$core$fg_params$fontfamily = rep('NotoSansCJKkrR',12)
-	statTab_a.theme$core$fg_params$fontfamily[c(3,4,8,12)] = 'NotoSansCJKkrB'
-	statTab_a.theme$core$fg_params$col = rep('#000000',12)
+	statTab_a.theme_forWeb$core$fg_params$fontfamily = rep('NotoSansCJKkrR',12)
+	statTab_a.theme_forWeb$core$fg_params$fontfamily[c(3,4,8,12)] = 'NotoSansCJKkrB'
+	statTab_a.theme_forWeb$core$fg_params$col = rep('#000000',12)
 
-	statTab_b.theme = ttheme_minimal(base_family='NotoSansCJKkrR',
+	statTab_b.theme_forWeb = ttheme_minimal(base_family='NotoSansCJKkrR',
 		core = list(bg_params=list(fill='#F7F8F9',col=NA),
-					fg_params=list(hjust=0,x=0,vjust=0,col='#808285',fontsize=11,fontface='plain'))
+					fg_params=list(hjust=0,x=0,vjust=0.1,col='#808285',fontsize=11,fontface='plain'))
 	)
 
+	statTab_a.theme_forApp = statTab_a.theme_forWeb
+	statTab_a.theme_forApp$core$fg_params$fontsize = c(1,1,23,21,19,23,19,25,19,15,19,23)
+	statTab_b.theme_forApp = statTab_b.theme_forWeb
+	statTab_b.theme_forApp$core$fg_params$fontsize = 15
+
 	# TABLE # 
-	out.statTab_avg_a = tableGrob(statTab_avg_a,theme=statTab_a.theme,cols=NULL,rows=NULL,
-		widths=unit(c(5,133,60,60,80,65),'points'),heights=unit(c(33,26),'points'))
+	statTab_a.W_forWeb = c(5,133,60,60,80,65)
+	statTab_a.W_forApp = c(10,170,85,70,90,87)
+	statTab_a.H_forWeb = c(33,26)
+	statTab_a.H_forApp = c(45,42)
 
-	out.statTab_avg_b = tableGrob(statTab_avg_b,theme=statTab_b.theme,cols=NULL,rows=NULL,
-		widths=unit(c(138,200,65),'points'),heights=unit(26,'points'))
+	statTab_b.W_forWeb = c(138,200,65)
+	statTab_b.H_forWeb = 26
+	statTab_b.W_forApp = c(180,245,87)
+	statTab_b.H_forApp = 42
+	
+	out.Web.statTab_avg_a = tableGrob(statTab_avg_a,theme=statTab_a.theme_forWeb,cols=NULL,rows=NULL,
+		widths=unit(statTab_a.W_forWeb,'points'),heights=unit(statTab_a.H_forWeb,'points'))
 
-	statTab_a.theme$core$bg_params$fill = statTab_gmi.bgcol
-	statTab_a.theme$core$fg_params$col[8] = statTab_gmi_a.ftcol
-	out.statTab_gmi_a = tableGrob(statTab_gmi_a,theme=statTab_a.theme,cols=NULL,rows=NULL,
-		widths=unit(c(5,133,60,60,80,65),'points'),heights=unit(c(33,26),'points'))
+	out.App.statTab_avg_a = tableGrob(statTab_avg_a,theme=statTab_a.theme_forApp,cols=NULL,rows=NULL,
+		widths=unit(statTab_a.W_forApp,'points'),heights=unit(statTab_a.H_forApp,'points'))
 
-	statTab_b.theme$core$bg_params$fill = statTab_gmi.bgcol
-	statTab_b.theme$core$fg_params$col = statTab_gmi_b.ftcol
-	out.statTab_gmi_b = tableGrob(statTab_gmi_b,theme=statTab_b.theme,cols=NULL,rows=NULL,
-		widths=unit(c(138,200,65),'points'),heights=unit(26,'points'))
+	out.Web.statTab_avg_b = tableGrob(statTab_avg_b,theme=statTab_b.theme_forWeb,cols=NULL,rows=NULL,
+		widths=unit(statTab_b.W_forWeb,'points'),heights=unit(statTab_b.H_forWeb,'points'))
 
-	statTab_a.theme$core$bg_params$fill = statTab_cv.bgcol
-	statTab_a.theme$core$fg_params$col[8] = statTab_cv_a.ftcol
-	out.statTab_cv_a = tableGrob(statTab_cv_a,theme=statTab_a.theme,cols=NULL,rows=NULL,
-		widths=unit(c(5,133,60,60,80,65),'points'),heights=unit(c(33,26),'points'))
+	out.App.statTab_avg_b = tableGrob(statTab_avg_b,theme=statTab_b.theme_forApp,cols=NULL,rows=NULL,
+		widths=unit(statTab_b.W_forApp,'points'),heights=unit(statTab_b.H_forApp,'points'))
 
-	statTab_b.theme$core$bg_params$fill = statTab_cv.bgcol
-	statTab_b.theme$core$fg_params$col = statTab_cv_b.ftcol
-	out.statTab_cv_b = tableGrob(statTab_cv_b,theme=statTab_b.theme,cols=NULL,rows=NULL,
-		widths=unit(c(138,200,65),'points'),heights=unit(26,'points'))
+	statTab_a.theme_forWeb$core$bg_params$fill = statTab_gmi.bgcol
+	statTab_a.theme_forWeb$core$fg_params$col[8] = statTab_gmi_a.ftcol
+	out.Web.statTab_gmi_a = tableGrob(statTab_gmi_a,theme=statTab_a.theme_forWeb,cols=NULL,rows=NULL,
+		widths=unit(statTab_a.W_forWeb,'points'),heights=unit(statTab_a.H_forWeb,'points'))
 
-	statTab_a.theme$core$bg_params$fill = '#F7F8F9'
-	statTab_a.theme$core$fg_params$col[8] = '#000000'
-	out.statTab_sd_a = tableGrob(statTab_sd_a,theme=statTab_a.theme,cols=NULL,rows=NULL,
-		widths=unit(c(5,133,60,60,80,65),'points'),heights=unit(c(33,26),'points'))
+	statTab_a.theme_forApp$core$bg_params$fill = statTab_gmi.bgcol
+	statTab_a.theme_forApp$core$fg_params$col[8] = statTab_gmi_a.ftcol
+	out.App.statTab_gmi_a = tableGrob(statTab_gmi_a,theme=statTab_a.theme_forApp,cols=NULL,rows=NULL,
+		widths=unit(statTab_a.W_forApp,'points'),heights=unit(statTab_a.H_forApp,'points'))
 
-	statTab_b.theme$core$bg_params$fill = '#F7F8F9'
-	statTab_b.theme$core$fg_params$col = '#808285'
-	out.statTab_sd_b = tableGrob(statTab_sd_b,theme=statTab_b.theme,cols=NULL,rows=NULL,
-		widths=unit(c(138,200,65),'points'),heights=unit(26,'points'))
+	statTab_b.theme_forWeb$core$bg_params$fill = statTab_gmi.bgcol
+	statTab_b.theme_forWeb$core$fg_params$col = statTab_gmi_b.ftcol
+	out.Web.statTab_gmi_b = tableGrob(statTab_gmi_b,theme=statTab_b.theme_forWeb,cols=NULL,rows=NULL,
+		widths=unit(statTab_b.W_forWeb,'points'),heights=unit(statTab_b.H_forWeb,'points'))
+
+	statTab_b.theme_forApp$core$bg_params$fill = statTab_gmi.bgcol
+	statTab_b.theme_forApp$core$fg_params$col = statTab_gmi_b.ftcol
+	out.App.statTab_gmi_b = tableGrob(statTab_gmi_b,theme=statTab_b.theme_forApp,cols=NULL,rows=NULL,
+		widths=unit(statTab_b.W_forApp,'points'),heights=unit(statTab_b.H_forApp,'points'))
+
+	statTab_a.theme_forWeb$core$bg_params$fill = statTab_cv.bgcol
+	statTab_a.theme_forWeb$core$fg_params$col[8] = statTab_cv_a.ftcol
+	out.Web.statTab_cv_a = tableGrob(statTab_cv_a,theme=statTab_a.theme_forWeb,cols=NULL,rows=NULL,
+		widths=unit(statTab_a.W_forWeb,'points'),heights=unit(statTab_a.H_forWeb,'points'))
+
+	statTab_a.theme_forApp$core$bg_params$fill = statTab_cv.bgcol
+	statTab_a.theme_forApp$core$fg_params$col[8] = statTab_cv_a.ftcol
+	out.App.statTab_cv_a = tableGrob(statTab_cv_a,theme=statTab_a.theme_forApp,cols=NULL,rows=NULL,
+		widths=unit(statTab_a.W_forApp,'points'),heights=unit(statTab_a.H_forApp,'points'))
+
+	statTab_b.theme_forWeb$core$bg_params$fill = statTab_cv.bgcol
+	statTab_b.theme_forWeb$core$fg_params$col = statTab_cv_b.ftcol
+	out.Web.statTab_cv_b = tableGrob(statTab_cv_b,theme=statTab_b.theme_forWeb,cols=NULL,rows=NULL,
+		widths=unit(statTab_b.W_forWeb,'points'),heights=unit(statTab_b.H_forWeb,'points'))
+
+	statTab_b.theme_forApp$core$bg_params$fill = statTab_cv.bgcol
+	statTab_b.theme_forApp$core$fg_params$col = statTab_cv_b.ftcol
+	out.App.statTab_cv_b = tableGrob(statTab_cv_b,theme=statTab_b.theme_forApp,cols=NULL,rows=NULL,
+		widths=unit(statTab_b.W_forApp,'points'),heights=unit(statTab_b.H_forApp,'points'))
+
+	statTab_a.theme_forWeb$core$bg_params$fill = '#F7F8F9'
+	statTab_a.theme_forWeb$core$fg_params$col[8] = '#000000'
+	out.Web.statTab_sd_a = tableGrob(statTab_sd_a,theme=statTab_a.theme_forWeb,cols=NULL,rows=NULL,
+		widths=unit(statTab_a.W_forWeb,'points'),heights=unit(statTab_a.H_forWeb,'points'))
+
+	statTab_a.theme_forApp$core$bg_params$fill = '#F7F8F9'
+	statTab_a.theme_forApp$core$fg_params$col[8] = '#000000'
+	out.App.statTab_sd_a = tableGrob(statTab_sd_a,theme=statTab_a.theme_forApp,cols=NULL,rows=NULL,
+		widths=unit(statTab_a.W_forApp,'points'),heights=unit(statTab_a.H_forApp,'points'))
+
+	statTab_b.theme_forWeb$core$bg_params$fill = '#F7F8F9'
+	statTab_b.theme_forWeb$core$fg_params$col = '#808285'
+	out.Web.statTab_sd_b = tableGrob(statTab_sd_b,theme=statTab_b.theme_forWeb,cols=NULL,rows=NULL,
+		widths=unit(statTab_b.W_forWeb,'points'),heights=unit(statTab_b.H_forWeb,'points'))
+
+	statTab_b.theme_forApp$core$bg_params$fill = '#F7F8F9'
+	statTab_b.theme_forApp$core$fg_params$col = '#808285'
+	out.App.statTab_sd_b = tableGrob(statTab_sd_b,theme=statTab_b.theme_forApp,cols=NULL,rows=NULL,
+		widths=unit(statTab_b.W_forApp,'points'),heights=unit(statTab_b.H_forApp,'points'))
 
 	# ADD LINE # 
-	out.statTab_avg_a = gtable_add_grob(out.statTab_avg_a,grobs=segmentsGrob(x0=unit(0,'npc'),y0=unit(1,'npc'),x1=unit(1,'npc'),y1=unit(1,'npc'),gp=gpar(lwd=1)),t=1,l=1,r=6)
-	
-	out.statTab_gmi_a = gtable_add_grob(out.statTab_gmi_a,grobs=segmentsGrob(x0=unit(0,'npc'),y0=unit(1,'npc'),x1=unit(1,'npc'),y1=unit(1,'npc'),gp=gpar(lwd=1)),t=1,l=1,r=6)
+	out.Web.statTab_avg_a = gtable_add_grob(out.Web.statTab_avg_a,grobs=segmentsGrob(x0=unit(0,'npc'),y0=unit(1,'npc'),x1=unit(1,'npc'),y1=unit(1,'npc'),gp=gpar(lwd=5,col='#FFFFFF')),t=1,l=1,r=6)	
+	out.Web.statTab_gmi_a = gtable_add_grob(out.Web.statTab_gmi_a,grobs=segmentsGrob(x0=unit(0,'npc'),y0=unit(1,'npc'),x1=unit(1,'npc'),y1=unit(1,'npc'),gp=gpar(lwd=5,col='#FFFFFF')),t=1,l=1,r=6)
+	out.Web.statTab_cv_a = gtable_add_grob(out.Web.statTab_cv_a,grobs=segmentsGrob(x0=unit(0,'npc'),y0=unit(1,'npc'),x1=unit(1,'npc'),y1=unit(1,'npc'),gp=gpar(lwd=5,col='#FFFFFF')),t=1,l=1,r=6)
+	out.Web.statTab_sd_a = gtable_add_grob(out.Web.statTab_sd_a,grobs=segmentsGrob(x0=unit(0,'npc'),y0=unit(1,'npc'),x1=unit(1,'npc'),y1=unit(1,'npc'),gp=gpar(lwd=5,col='#FFFFFF')),t=1,l=1,r=6)		
+	out.Web.statTab_sd_b = gtable_add_grob(out.Web.statTab_sd_b,grobs=segmentsGrob(x0=unit(0,'npc'),y0=unit(0,'npc'),x1=unit(1,'npc'),y1=unit(0,'npc'),gp=gpar(lwd=5,col='#FFFFFF')),t=1,l=1,r=3,z=3)
 
-	out.statTab_cv_a = gtable_add_grob(out.statTab_cv_a,grobs=segmentsGrob(x0=unit(0,'npc'),y0=unit(1,'npc'),x1=unit(1,'npc'),y1=unit(1,'npc'),gp=gpar(lwd=1)),t=1,l=1,r=6)
-
-	out.statTab_sd_a = gtable_add_grob(out.statTab_sd_a,grobs=segmentsGrob(x0=unit(0,'npc'),y0=unit(1,'npc'),x1=unit(1,'npc'),y1=unit(1,'npc'),gp=gpar(lwd=1)),t=1,l=1,r=6)
-		
-	out.statTab_sd_b = gtable_add_grob(out.statTab_sd_b,grobs=segmentsGrob(x0=unit(0,'npc'),y0=unit(0,'npc'),x1=unit(1,'npc'),y1=unit(0,'npc'),gp=gpar(lwd=1)),t=1,l=1,r=3,z=3)
+	out.App.statTab_avg_a = gtable_add_grob(out.App.statTab_avg_a,grobs=segmentsGrob(x0=unit(0,'npc'),y0=unit(1,'npc'),x1=unit(1,'npc'),y1=unit(1,'npc'),gp=gpar(lwd=5,col='#FFFFFF')),t=1,l=1,r=6)	
+	out.App.statTab_gmi_a = gtable_add_grob(out.App.statTab_gmi_a,grobs=segmentsGrob(x0=unit(0,'npc'),y0=unit(1,'npc'),x1=unit(1,'npc'),y1=unit(1,'npc'),gp=gpar(lwd=5,col='#FFFFFF')),t=1,l=1,r=6)
+	out.App.statTab_cv_a = gtable_add_grob(out.App.statTab_cv_a,grobs=segmentsGrob(x0=unit(0,'npc'),y0=unit(1,'npc'),x1=unit(1,'npc'),y1=unit(1,'npc'),gp=gpar(lwd=5,col='#FFFFFF')),t=1,l=1,r=6)
+	out.App.statTab_sd_a = gtable_add_grob(out.App.statTab_sd_a,grobs=segmentsGrob(x0=unit(0,'npc'),y0=unit(1,'npc'),x1=unit(1,'npc'),y1=unit(1,'npc'),gp=gpar(lwd=5,col='#FFFFFF')),t=1,l=1,r=6)		
+	out.App.statTab_sd_b = gtable_add_grob(out.App.statTab_sd_b,grobs=segmentsGrob(x0=unit(0,'npc'),y0=unit(0,'npc'),x1=unit(1,'npc'),y1=unit(0,'npc'),gp=gpar(lwd=5,col='#FFFFFF')),t=1,l=1,r=3,z=3)
 
 
 	## TABLE : eA1c표 ## 
 	# theme # 
-	statTab_ea1c_a.theme = ttheme_minimal(base_family='NotoSansCJKkrR',
+	statTab_ea1c_a.theme_forWeb = ttheme_minimal(base_family='NotoSansCJKkrR',
 		core = list(bg_params=list(fill=statTab_ea1c.bgcol,col=NA), 
 					fg_params=list(hjust=0,x=0.05,vjust=c(0.5,0),col=c('#000000','#808285'),
 					fontsize=c(13.5,12),fontface='plain'))
 	)
-	statTab_ea1c_a.theme$core$fg_params$fontfamily = c('NotoSansCJKkrB','NotoSansCJKkrR')
-	statTab_ea1c_b.theme = ttheme_minimal(base_family='NotoSansCJKkrR',
+	statTab_ea1c_a.theme_forWeb$core$fg_params$fontfamily = c('NotoSansCJKkrB','NotoSansCJKkrR')
+	statTab_ea1c_b.theme_forWeb = ttheme_minimal(base_family='NotoSansCJKkrR',
 		core = list(bg_params=list(fill=statTab_ea1c.bgcol,col=NA),
 					fg_params=list(hjust=0,x=c(0.2,0.01),vjust=0,col=statTab_ea1c.ftcol,
 					fontsize=c(16,10),fontface='plain'))
 	)
-	statTab_ea1c_b.theme$core$fg_params$fontfamily = c('NotoSansCJKkrB','NotoSansCJKkrR')
+	statTab_ea1c_b.theme_forWeb$core$fg_params$fontfamily = c('NotoSansCJKkrB','NotoSansCJKkrR')
 
 
 	## STAT TABLE ## 
-	out.statTab_forWeb = grid.arrange(grobs=list(
-		out.statTab_avg_a,out.statTab_avg_b,out.statTab_gmi_a,out.statTab_gmi_b,out.statTab_cv_a,out.statTab_cv_b,out.statTab_sd_a,out.statTab_sd_b),
-		nrow=8,ncol=1,layout_matrix(rbind(1,2,3,4,5,6,7,8)),widths=unit(403,'points'),heights=unit(rep(c(59,26),4),'points'))
+	out.Web.statTab = grid.arrange(grobs=list(
+		out.Web.statTab_avg_a,out.Web.statTab_avg_b,out.Web.statTab_gmi_a,out.Web.statTab_gmi_b,out.Web.statTab_cv_a,out.Web.statTab_cv_b,out.Web.statTab_sd_a,out.Web.statTab_sd_b),
+		nrow=8,ncol=1,layout_matrix(rbind(1,2,3,4,5,6,7,8)),widths=unit(sum(statTab_a.W_forWeb),'points'),heights=unit(rep(c(sum(statTab_a.H_forWeb),sum(statTab_b.H_forWeb)),4),'points'))
+
+	out.App.statTab = grid.arrange(grobs=list(
+		out.App.statTab_avg_a,out.App.statTab_avg_b,out.App.statTab_gmi_a,out.App.statTab_gmi_b,out.App.statTab_cv_a,out.App.statTab_cv_b,out.App.statTab_sd_a,out.App.statTab_sd_b),
+		nrow=8,ncol=1,layout_matrix(rbind(1,2,3,4,5,6,7,8)),widths=unit(sum(statTab_a.W_forApp),'points'),heights=unit(rep(c(sum(statTab_a.H_forApp),sum(statTab_b.H_forApp)),4),'points'))
 
 
-	out.statTab_ea1c_forWeb = grid.arrange(grobs=list(
-		tableGrob(statTab_ea1c_a,theme=statTab_ea1c_a.theme,cols=NULL,rows=NULL,widths=unit(258,'points'),heights=unit(c(33,26),'points')),
-		tableGrob(statTab_ea1c_b,theme=statTab_ea1c_b.theme,cols=NULL,rows=NULL,widths=unit(c(58,200),'points'),heights=unit(26,'points'))),
-		nrow=2,ncol=1,layout_matirx(rbind(1,2)),widths=unit(258,'points'),heights=unit(c(59,26),'points'))
+	out.Web.statTab_ea1c = grid.arrange(grobs=list(
+		tableGrob(statTab_ea1c_a,theme=statTab_ea1c_a.theme_forWeb,cols=NULL,rows=NULL,widths=unit(258,'points'),heights=unit(statTab_a.H_forWeb,'points')),
+		tableGrob(statTab_ea1c_b,theme=statTab_ea1c_b.theme_forWeb,cols=NULL,rows=NULL,widths=unit(c(58,200),'points'),heights=unit(statTab_b.H_forWeb,'points'))),
+		nrow=2,ncol=1,layout_matirx(rbind(1,2)),widths=unit(258,'points'),heights=unit(c(sum(statTab_a.H_forWeb),sum(statTab_b.H_forWeb)),'points'))
 
-	out.statTab_ea1c_forWeb = gtable_add_grob(out.statTab_ea1c_forWeb,grobs=rectGrob(gp=gpar(fill=NA,col=statTab_ea1c.ftcol)),t=1,b=2,l=1,r=1)
+	out.Web.statTab_ea1c = gtable_add_grob(out.Web.statTab_ea1c,grobs=rectGrob(gp=gpar(fill=NA,col=statTab_ea1c.ftcol,lwd=2)),t=1,b=2,l=1,r=1)
 
+	## rounded corner ## 
+	grob.tmp = out.Web.statTab_ea1c$grobs[[3]]
+	rgrob.tmp = roundrectGrob(x=grob.tmp$x,y=grob.tmp$y,width=grob.tmp$width,height=grob.tmp$height,r=unit(0.1,'snpc'),just=grob.tmp$just,name=grob.tmp$name,gp=grob.tmp$gp,vp=grob.tmp$vp)
+	out.Web.statTab_ea1c$grobs[[3]] = rgrob.tmp
 
-	## todo app ## doing 211006
-	LibreReport_Stat_forApp = try(grid.arrange(grobs=list(
-		tableGrob('연속혈당 통계분석',theme=subTitle.theme_forApp,cols=NULL,rows=NULL,widths=unit(512,'points'),heights=unit(50,'points')),
-		tableGrob(STAT.subTitle.remark,theme=remark.theme_forWeb,cols=NULL,rows=NULL,widths=unit(512,'points'),heights=unit(28,'points')),
-		out.tab1_forWeb,out.tab2_forWeb),
-		nrow=5,ncol=3,layout_matrix=rbind(c(1,1,1),c(2,2,2),NA,c(3,NA,4),c(3,NA,NA)),
-		widths=unit(c(519,36,321),'points'),heights=unit(c(50,28,10,78,sum(rep(78,3))),'points')),silent=T)
+	statTab_ea1c_a.theme_forApp = statTab_ea1c_a.theme_forWeb
+	statTab_ea1c_a.theme_forApp$core$fg_params$fontsize = c(23,15)
+	statTab_ea1c_a.theme_forApp$core$fg_params$x = 0.05
+	statTab_ea1c_b.theme_forApp = statTab_ea1c_b.theme_forWeb
+	statTab_ea1c_b.theme_forApp$core$fg_params$fontsize = c(25,15)
+	statTab_ea1c_b.theme_forApp$core$fg_params$x = c(0.8,0.01)
+	statTab_ea1c_b.theme_forApp$core$fg_params$vjust = 0.5
+	statTab_ea1c_b.theme_forApp$core$fg_params$hjust = c(0.8,0)
+
+	out.App.statTab_ea1c = grid.arrange(grobs=list(
+		tableGrob(statTab_ea1c_a,theme=statTab_ea1c_a.theme_forApp,cols=NULL,rows=NULL,widths=unit(412,'points'),heights=unit(statTab_a.H_forApp,'points')),
+		tableGrob(statTab_ea1c_b,theme=statTab_ea1c_b.theme_forApp,cols=NULL,rows=NULL,widths=unit(c(50,37),'points'),heights=unit(sum(statTab_a.H_forApp),'points'))),
+		nrow=1,ncol=2,layout_matirx(cbind(1,2)),widths=unit(c(412,87),'points'),heights=unit(sum(statTab_a.H_forApp),'points'))
+
+	out.App.statTab_ea1c = gtable_add_grob(out.App.statTab_ea1c,grobs=rectGrob(gp=gpar(fill=NA,col=statTab_ea1c.ftcol,lwd=2)),t=1,b=1,l=1,r=2)
+
+	grob.tmp = out.App.statTab_ea1c$grobs[[3]]
+	rgrob.tmp = roundrectGrob(x=grob.tmp$x,y=grob.tmp$y,width=grob.tmp$width,height=grob.tmp$height,r=unit(0.1,'snpc'),just=grob.tmp$just,name=grob.tmp$name,gp=grob.tmp$gp,vp=grob.tmp$vp)
+	out.App.statTab_ea1c$grobs[[3]] = rgrob.tmp
 
 
 	### step3 =============================================================================##
@@ -514,14 +587,13 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 	out.TIR[[2]] = ggplot(TIR.source, aes(x=xlab,y=yprime,fill=factor(TIR.source$levels),color=factor(x)))+
 		scale_fill_manual(values=c('5'='#b6202e','4'='#d71920','3'='#40ac49','2'='#fff100','1'='#fcb813'))+
 		scale_color_manual(values=c('1'='#000000','2'=NA))+
-#		scale_x_discrete(name='',breaks=c(1,2),labels=c('과거','이번 결과'))+
-		geom_bar(stat='identity',width=(0.8/TIR.source$x),position='stack')+
+		geom_chicklet(width=(0.8/TIR.source$x),position='stack')+
 		geom_text(aes(label=paste(round(y,0),'%',sep='')),vjust=1.1,color='#000000',position='stack',size=4)+
 		geom_hline(yintercept=0,color='#000000',size=0.3)+
 		theme(panel.background=element_rect(fill=NA), legend.position='none',
-		axis.ticks.x=element_blank(),axis.title.x=element_blank(),axis.text.x=element_text(size=13,color='#000000',family='NotoSansCJKkrR'),
-		axis.ticks.y=element_blank(),axis.title.y=element_blank(),axis.text.y=element_blank(),
-		plot.margin=margin(0,0.3,0.3,0.3,unit='cm'))
+			axis.ticks.x=element_blank(),axis.title.x=element_blank(),axis.text.x=element_text(size=13,color='#000000',family='NotoSansCJKkrR'),
+			axis.ticks.y=element_blank(),axis.title.y=element_blank(),axis.text.y=element_blank(),
+			plot.margin=margin(0,0.3,0.3,-1,unit='cm'))
 
 
 	## TIR 전체 테이블 ##
@@ -557,7 +629,7 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 	if( !is.na(TIR.Goal) ) {
 		tirTab.GoalYN[names(out.TIR[[1]][[1]])=='TIR'] = ifelse(out.TIR[[1]][[1]][names(out.TIR[[1]][[1]])=='TIR'] < TIR.Goal,2,1)
 		tirTab.row = c(tirTab.row,c(7,8,9))	
-		tirTab.symb.col = c(tirTab.symb.col,'#b6202e')	
+		tirTab.symb.col = c(tirTab.symb.col,'#40ac49')	
 	}
 	if( !is.na(TBR_lev1.Goal) ) {
 		tirTab.GoalYN[names(out.TIR[[1]][[1]])=='TBR1'] = ifelse(sum(out.TIR[[1]][[1]][grepl('TBR',names(out.TIR[[1]][[1]]))],na.rm=T) >= TBR_lev1.Goal,2,1)
@@ -567,30 +639,38 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 	if( !is.na(TBR_lev2.Goal) ) {
 		tirTab.GoalYN[names(out.TIR[[1]][[1]])=='TBR2'] = ifelse(out.TIR[[1]][[1]][names(out.TIR[[1]][[1]])=='TBR2'] >= TBR_lev2.Goal && TBR_lev2.Goal!=0,2,1)
 		tirTab.row = c(tirTab.row,c(13,14,15))	
-		tirTab.symb.col = c(tirTab.symb.col,'#40ac49')	
+		tirTab.symb.col = c(tirTab.symb.col,'#b6202e')	
 	}
 
 #	tirTab.bgcol = rep(ifelse(tirTab.GoalYN==2,'#FFF6F9','#F7F8F9'),each=3)
-	tirTab.bgcol = rep(ifelse(tirTab.GoalYN==2,'#FFF6F9',NA),each=3)
+	tirTab.bgcol = rep(ifelse(tirTab.GoalYN==2,'#FFF6F9','#FFFFFF'),each=3) ##FFF6F9
 	tirTab.ftcol = vector('character',15)
 	tirTab.ftcol[which(c(1:15)%%3==1)] = ifelse(tirTab.GoalYN==2,'#FF2525','#000000')
 	tirTab.ftcol[which(c(1:15)%%3==2)] = ifelse(!is.na(tirTab.GoalYN),'#000000',NA)
 	tirTab.ftcol[which(c(1:15)%%3==0)] = '#000000' 
 
-	tirTab.theme = ttheme_minimal(base_family='NotoSansCJKkrR',
+	tirTab.theme_forWeb = ttheme_minimal(base_family='NotoSansCJKkrR',
 #		core = list(bg_params=list(fill=tirTab.bgcol[!is.na(tirTab.bgcol)],col=NA),
-		core = list(bg_params=list(fill=c(rep(NA,length(tirTab.row)),rep(tirTab.bgcol[!is.na(tirTab.bgcol)],2)),col=NA),
+		core = list(bg_params=list(fill=c(rep('#FFFFFF',length(tirTab.row)),rep(tirTab.bgcol[!is.na(tirTab.bgcol)],2)),col=NA),
 					fg_params=list(hjust=rep(0,length(tirTab.row)*3),x=0.01,vjust=0.5,col=c(rep(tirTab.symb.col,each=3),rep('#000000',length(tirTab.row)),tirTab.ftcol[!is.na(tirTab.ftcol)]),
 					fontsize=c(rep(14,length(tirTab.row)),rep(c(13,12,12),length(tirTab.row)/3),rep(c(14,11,11),length(tirTab.row)/3)))
 		)
 	)
-	tirTab.theme$core$fg_params$fontfamily = c(rep('NotoSansCJKkrR',length(tirTab.row)*2),rep(c('NotoSansCJKkrB','NotoSansCJKkrR','NotoSansCJKkrR'),length(tirTab.row)/3))
+	tirTab.theme_forWeb$core$fg_params$fontfamily = c(rep('NotoSansCJKkrR',length(tirTab.row)*2),rep(c('NotoSansCJKkrB','NotoSansCJKkrR','NotoSansCJKkrR'),length(tirTab.row)/3))
 
 	tirTab = tirTab[tirTab.row,]
-	tirTab.height = rep(22,length(tirTab.row))
-	out.tirTab_forWeb = tableGrob(tirTab,theme=tirTab.theme,cols=NULL,rows=NULL,
-		widths=unit(c(20,132,70),'points'),heights=unit(tirTab.height,'points'))
+	tirTab.H_forWeb = rep(22,length(tirTab.row))
+	tirTab.W_forWeb = c(20,132,70)
+	out.Web.tirTab = tableGrob(tirTab,theme=tirTab.theme_forWeb,cols=NULL,rows=NULL,
+		widths=unit(tirTab.W_forWeb,'points'),heights=unit(tirTab.H_forWeb,'points'))
 
+	tirTab.theme_forApp = tirTab.theme_forWeb
+	tirTab.theme_forApp$core$fg_params$fontsize = c(rep(20,length(tirTab.row)),rep(c(21,17,17),length(tirTab.row)/3),rep(c(25,15,15),length(tirTab.row)/3))
+
+	tirTab.H_forApp = rep(28,length(tirTab.row))
+	tirTab.W_forApp = c(28,155,83)
+	out.App.tirTab = tableGrob(tirTab,theme=tirTab.theme_forApp,cols=NULL,rows=NULL,
+		widths=unit(tirTab.W_forApp,'points'),heights=unit(tirTab.H_forApp,'points'))
 
 	## TIR 상세 그래프 ##
 	# HMSIdx.6H : 1 야간 2 오전 3 오후 4 저녁 
@@ -645,7 +725,6 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 		}
 	}
 
-#	TIR.detail.source$y = ifelse( is.na(TIR.detail.source$y), 0, TIR.detail.source$y )
 
 	TIR.detail.source$colYN = 0
 	TIR.detail.source$xlab = ifelse(TIR.detail.source$block==1,'야간',ifelse(TIR.detail.source$block==2,'오전',ifelse(TIR.detail.source$block==3,'오후','저녁')))
@@ -661,7 +740,7 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 		out.TIR.detail[[2]][[1]] = ggplot(TIR.detail.source[which(TIR.detail.source$gr=='TAR2'),],aes(x=xlab,y=y,fill=factor(colYN)))+
 			scale_fill_manual(values=c('1'='#fcb813','0'='#FFD85D'))+
 			scale_y_continuous(limits=ylim.tmp)+
-			geom_bar(stat='identity',width=0.5)+
+			geom_chicklet(width=0.5)+
 #			geom_text(aes(label=paste(round(y,0),'%',sep='')),vjust=-1,color='#000000',size=3.5)+
 			geom_text(aes(x=xlab,y=0,label=paste(round(y,0),'%\n(',timelab,')',sep='')),vjust=-0.5,color='#000000',size=3.5)+
 			geom_hline(yintercept=0,color='#000000',size=0.3)+
@@ -690,7 +769,7 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 		out.TIR.detail[[2]][[2]] = ggplot(TIR.detail.source[which(TIR.detail.source$gr=='TAR1'),],aes(x=xlab,y=y,fill=factor(colYN)))+
 			scale_fill_manual(values=c('1'='#fff100','0'='#FFFF7D'))+
 			scale_y_continuous(limits=ylim.tmp)+
-			geom_bar(stat='identity',width=0.5)+
+			geom_chicklet(width=0.5)+
 			geom_text(aes(x=xlab,y=0,label=paste(round(y,0),'%\n(',timelab,')',sep='')),vjust=-0.5,color='#000000',size=3.5)+
 			geom_hline(yintercept=0,color='#000000',size=0.3)+
 			labs(title='고혈당')+
@@ -718,7 +797,7 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 		out.TIR.detail[[2]][[3]] = ggplot(TIR.detail.source[which(TIR.detail.source$gr=='TBR1'),],aes(x=xlab,y=y,fill=factor(colYN)))+
 			scale_fill_manual(values=c('1'='#D71920','0'='#F07C82'))+
 			scale_y_continuous(limits=ylim.tmp)+
-			geom_bar(stat='identity',width=0.5)+
+			geom_chicklet(width=0.5)+
 			geom_text(aes(x=xlab,y=0,label=paste(round(y,0),'%\n(',timelab,')',sep='')),vjust=-0.5,color='#000000',size=3.5)+
 			geom_hline(yintercept=0,color='#000000',size=0.3)+
 			labs(title='저혈당')+
@@ -746,7 +825,7 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 		out.TIR.detail[[2]][[4]] = ggplot(TIR.detail.source[which(TIR.detail.source$gr=='TBR2'),],aes(x=xlab,y=y,fill=factor(colYN)))+
 			scale_fill_manual(values=c('1'='#B6202E','0'='#E25C69'))+
 			scale_y_continuous(limits=ylim.tmp)+
-			geom_bar(stat='identity',width=0.5)+
+			geom_chicklet(width=0.5)+
 			geom_text(aes(x=xlab,y=0,label=paste(round(y,0),'%\n(',timelab,')',sep='')),vjust=-0.5,color='#000000',size=3.5)+
 			geom_hline(yintercept=0,color='#000000',size=0.3)+
 			labs(title='매우 낮은 저혈당')+
@@ -771,17 +850,59 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 		out.TIR.detail[[2]][[3]],out.TIR.detail[[2]][[4]]),
 		nrow=2,ncol=2,layout_matrix=rbind(c(1,2),c(3,4)),
 		widths=unit(c(209,209),'points'),heights=unit(c(165,165),'points'))
-	
-#	LibreReport_TIR_forWeb = grid.arrange(grobs=list(tableGrob('범위 내 시간 (Time in Ranges)',theme=subTitle.theme_forWeb,cols=NULL,rows=NULL,widths=unit(360,'points'),heights=unit(26,'points')),
-#		tableGrob('범위내시간> 시간대별 상세보기',theme=subTitle.theme_forWeb,cols=NULL,rows=NULL,widths=unit(480,'points'),heights=unit(26,'points')),
-#		tableGrob('야간: 22-04시 오전: 04-10시 오후: 10-16시 저녁: 16-22시',theme=remark.theme_forWeb,cols=NULL,rows=NULL,widths=unit(480,'points'),heights=unit(26,'points')),
-#		out.TIR[[2]],out.tab3_forWeb,out.TIR.detail[[3]]),
-#		nrow=5,ncol=4,layout_matrix=rbind(c(1,1,1,2),c(NA,NA,NA,3),NA,c(4,5,NA,6),c(NA,NA,NA,6)),
-#		widths=unit(c(160,200,36,480),'points'),heights=unit(c(26,26,10,sum(tab3.height),(360-sum(tab3.height))),'points'))
+
 
 	### output =============================================================================##
 
-	CairoPNG(filename=paste(memberKey,createdtime,'Web_StatandTIR.png',sep='_'),family='NotoSansCJKkrR',scale=1/0.32,bg='white',width=1168,height=1100,unit='px',dpi=96)
+	## forApp ==== ##
+
+	Stat_forApp.H = c(50,28,10,sum(c(statTab_a.H_forApp,statTab_b.H_forApp))*4,20,sum(c(statTab_a.H_forApp,statTab_b.H_forApp)))
+
+	CairoPNG(filename=paste(memberKey,createdtime,'App_Stat.png',sep='_'),family='NotoSansCJKkrR',scale=1/0.32,bg='white',width=720,height=((sum(Stat_forApp.H)+30)/0.75),unit='px',dpi=96)
+	
+	LibreReport_Stat_forApp = try(grid.arrange(grobs=list(
+		tableGrob(data.frame('','연속혈당 통계분석'),theme=subTitle.theme_forApp,cols=NULL,rows=NULL,widths=unit(c(10,502),'points'),heights=unit(50,'points')), #1
+		tableGrob(data.frame('',STAT.subTitle.remark),theme=remark.theme_forWeb,cols=NULL,rows=NULL,widths=unit(c(10,502),'points'),heights=unit(28,'points')), #2
+		out.App.statTab,out.App.statTab_ea1c), #3 #4
+		nrow=6,ncol=1,layout_matrix=rbind(1,2,NA,3,NA,4),
+		widths=unit(512,'points'),heights=unit(Stat_forApp.H,'points')),silent=T)
+
+	dev.off()
+
+	if ( class(LibreReport_Stat_forApp)[1]!='try-error' ) {
+		outFileNames = c(outFileNames,paste(memberKey,createdtime,'App_Stat.png',sep='_'))
+	} else {
+		errCode.sub = c(errCode.sub,'Errr_201')
+	}
+
+
+	## forApp ==== ##
+
+	TIR_forApp.H = c(50,28,10,sum(tirTab.H_forApp))
+
+	CairoPNG(filename=paste(memberKey,createdtime,'App_TIR.png',sep='_'),family='NotoSansCJKkrR',scale=1/0.32,bg='white',width=720,height=((sum(TIR_forApp.H)+30)/0.75),unit='px',dpi=96)
+
+	LibreReport_TIR_forApp = try(grid.arrange(grobs=list(
+		tableGrob(data.frame('','범위 내 시간'),theme=subTitle.theme_forApp,cols=NULL,rows=NULL,widths=unit(c(10,502),'points'),heights=unit(50,'points')), #1
+		tableGrob(data.frame('',STAT.subTitle.remark),theme=remark.theme_forWeb,cols=NULL,rows=NULL,widths=unit(c(10,502),'points'),heights=unit(28,'points')), #2
+		out.TIR[[2]],out.App.tirTab),
+		nrow=4,ncol=2,layout_matrix=rbind(c(1,1),c(2,2),NA,c(3,4)),
+		widths=unit(c(512-sum(tirTab.W_forApp),sum(tirTab.W_forApp)),'points'),heights=unit(TIR_forApp.H,'points')),silent=T)
+
+	dev.off()
+
+	if ( class(LibreReport_TIR_forApp)[1]!='try-error' ) {
+		outFileNames = c(outFileNames,paste(memberKey,createdtime,'App_TIR.png',sep='_'))
+	} else {
+		errCode.sub = c(errCode.sub,'Errr_202')
+	}
+
+
+	## forWeb ==== ##
+
+	StatandTIR_forWeb.H = c(26,26,10,85,85*3,22,26,26,10,sum(tirTab.H_forWeb),(330-sum(tirTab.H_forWeb)))
+
+	CairoPNG(filename=paste(memberKey,createdtime,'Web_StatandTIR.png',sep='_'),family='NotoSansCJKkrR',scale=1/0.32,bg='white',width=1168,height=(sum(StatandTIR_forWeb.H)+30)/0.75,unit='px',dpi=96)
 	
 	layout.mat = matrix(NA,nrow=11,ncol=7)
 	layout.mat[1,] = 1
@@ -794,25 +915,25 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 	layout.mat[11,] = c(NA,NA,NA,NA,10,10,NA)
 
 	LibreReport_StatandTIR_forWeb = try(grid.arrange(grobs=list(
-		tableGrob('연속혈당 통계분석',theme=subTitle.theme_forWeb,cols=NULL,rows=NULL,widths=unit(876,'points'),heights=unit(26,'points')), #1 
-		tableGrob(STAT.subTitle.remark,theme=remark.theme_forWeb,cols=NULL,rows=NULL,widths=unit(876,'points'),heights=unit(26,'points')), #2
-		out.statTab_forWeb, #3
-		out.statTab_ea1c_forWeb, #4
-		tableGrob('범위 내 시간 (Time in Ranges)',theme=subTitle.theme_forWeb,cols=NULL,rows=NULL,widths=unit(418,'points'),heights=unit(26,'points')), #5
-		tableGrob('범위내시간> 시간대별 상세보기',theme=subTitle.theme_forWeb,cols=NULL,rows=NULL,widths=unit(438,'points'),heights=unit(26,'points')), #6
-		tableGrob('야간: 22-04시 오전: 04-10시 오후: 10-16시 저녁: 16-22시',theme=remark.theme_forWeb,cols=NULL,rows=NULL,widths=unit(438,'points'),heights=unit(26,'points')), #7
+		tableGrob(data.frame('','연속혈당 통계분석'),theme=subTitle.theme_forWeb,cols=NULL,rows=NULL,widths=unit(c(5,871),'points'),heights=unit(26,'points')), #1 
+		tableGrob(data.frame('',STAT.subTitle.remark),theme=remark.theme_forWeb,cols=NULL,rows=NULL,widths=unit(c(5,871),'points'),heights=unit(26,'points')), #2
+		out.Web.statTab, #3
+		out.Web.statTab_ea1c, #4
+		tableGrob(data.frame('','범위 내 시간 (Time in Ranges)'),theme=subTitle.theme_forWeb,cols=NULL,rows=NULL,widths=unit(c(5,413),'points'),heights=unit(26,'points')), #5
+		tableGrob(data.frame('','범위내시간> 시간대별 상세보기'),theme=subTitle.theme_forWeb,cols=NULL,rows=NULL,widths=unit(c(5,433),'points'),heights=unit(26,'points')), #6
+		tableGrob(data.frame('','야간: 22-04시 오전: 04-10시 오후: 10-16시 저녁: 16-22시'),theme=remark.theme_forWeb,cols=NULL,rows=NULL,widths=unit(c(5,433),'points'),heights=unit(26,'points')), #7
 		out.TIR[[2]], #8 
-		out.tirTab_forWeb, #9
+		out.Web.tirTab, #9
 		out.TIR.detail[[3]]), #10
 		nrow=11,ncol=7,layout_matrix=layout.mat,
-		widths=unit(c(15,181,222,20,50,368,20),'points'),heights=unit(c(26,26,10,85,85*3,20,26,26,10,sum(tirTab.height),(330-sum(tirTab.height))),'points')),silent=T)
+		widths=unit(c(15,181,222,20,50,368,20),'points'),heights=unit(c(26,26,10,85,85*3,20,26,26,10,sum(tirTab.H_forWeb),(330-sum(tirTab.H_forWeb))),'points')),silent=T)
 
 	dev.off() 
 	
 	if ( class(LibreReport_StatandTIR_forWeb)[1]!='try-error' ) {
 		outFileNames = c(outFileNames,paste(memberKey,createdtime,'Web_StatandTIR.png',sep='_'))
 	} else {
-		errCode.sub = c(errCode.sub,'Errr_201')
+		errCode.sub = c(errCode.sub,'Errr_203')
 	}
 
 

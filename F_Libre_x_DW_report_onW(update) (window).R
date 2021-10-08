@@ -15,7 +15,7 @@ Libre_x_DW_report_onW = function( Target, FinalDate, inFileName, method, path0, 
 	### step0 =============================================================================##
 	### Install Package
 #	strt.time = Sys.time()
-	needto_packages = c('ggplot2','gridExtra','grid','gtable','readxl','jsonlite','Cairo','stringr','jsonlite','png','sysfonts','showtextdb','showtext') # 
+	needto_packages = c('ggplot2','gridExtra','grid','gtable','readxl','jsonlite','Cairo','stringr','jsonlite','png','sysfonts','showtextdb','showtext','ggchicklet') # 
 	for(i in 1:length(needto_packages)){
 		if(!needto_packages[i] %in% installed.packages()){
 			install.packages( needto_packages[i] , repos='http://cran.r-project.org')
@@ -31,6 +31,10 @@ Libre_x_DW_report_onW = function( Target, FinalDate, inFileName, method, path0, 
 			}
 		}
 	}
+
+	## ggchicklet : package
+	## install.pakcages('ggchicklet',repos='https://cinc.rud.is')
+	## library(ggchicklet)
 
 	# font 설정 # 
 #	ttf_import(paths='C:/리브레/Auto30_소스/Font/')
@@ -60,12 +64,12 @@ Libre_x_DW_report_onW = function( Target, FinalDate, inFileName, method, path0, 
 		AGPdata = AGPdata$AGPdata
 	}
 
-
-	setwd(path0) ## 이미지 파일 경로 설정 
+	### 이미지 파일 경로 설정  
+	setwd(path0) 
 
 	### step2 =============================================================================##
 	### 연속혈당 통계분석 및 범위내시간 
-	
+
 	section1.tmp = try(create_GlucoseStat(data=AGPdata,Target=Target,memberKey=memberKey,createdtime=createdtime,mod=mod,TIR.detail.opt=3), silent=T)
 	# 에러 확인용 ****************************************************************************
 	if ( class(section1.tmp)=='try-error' ) {
