@@ -291,22 +291,22 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 	if ( out.STAT[[1]][2]>=out.Goal[[4]][1] ) {
 		statTab_gmi.bgcol = '#FFF6F9'
 		statTab_gmi_a.ftcol = '#FF2525'
-		statTab_gmi_b.ftcol = '#000000'
+		statTab_gmi_b.ftcol = '#122747'
 		statTab_gmi_b[2] = paste(out.Goal[[4]][1],'% 미만으로 줄여야합니다.',sep='')
 	} else {
 		statTab_gmi.bgcol = '#F7F8F9'
-		statTab_gmi_a.ftcol = '#000000'
+		statTab_gmi_a.ftcol = '#122747'
 		statTab_gmi_b.ftcol = '#808285'
 		statTab_gmi_b[2] = paste(out.Goal[[4]][1],'% 미만 달성했습니다.',sep='')
 	}
 	if ( out.STAT[[1]][3]>out.Goal[[4]][2] ) {
 		statTab_cv.bgcol = '#FFF6F9'
 		statTab_cv_a.ftcol = '#FF2525'
-		statTab_cv_b.ftcol = '#000000'
+		statTab_cv_b.ftcol = '#122747'
 		statTab_cv_b[2] = paste(out.Goal[[4]][2],'% 이하로 줄여야합니다.',sep='')
 	} else {
 		statTab_cv.bgcol = '#F7F8F9'
-		statTab_cv_a.ftcol = '#000000'
+		statTab_cv_a.ftcol = '#122747'
 		statTab_cv_b.ftcol = '#808285'
 		statTab_cv_b[2] = paste(out.Goal[[4]][2],'% 이하 달성했습니다.',sep='')
 	}
@@ -342,7 +342,7 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 			statTab_ea1c.ftcol = '#FF2525'
 		} else {
 			statTab_ea1c.bgcol = '#F7F8F9'
-			statTab_ea1c.ftcol = '#000000'			
+			statTab_ea1c.ftcol = '#122747'			
 		}
 		statTab_ea1c_b[1,2] = ' %'
 
@@ -361,7 +361,7 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 			statTab_ea1c.ftcol = '#FF2525'
 		} else {
 			statTab_ea1c.bgcol = '#F7F8F9'
-			statTab_ea1c.ftcol = '#000000'			
+			statTab_ea1c.ftcol = '#122747'			
 		}
 		statTab_ea1c_b[1,2] = ' %'
 
@@ -372,12 +372,12 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 	# theme # 
 	statTab_a.theme_forWeb = ttheme_minimal(base_family='NotoSansCJKkrR',
 		core = list(bg_params=list(fill='#F7F8F9',col=NA),
-					fg_params=list(hjust=rep(c(0,0,0,0,0,0),each=2),x=rep(c(0.01,0.01,0.01,0.01,0.01,0.01),each=2),vjust=rep(c(0.5,0.8),6),col='#000000',
+					fg_params=list(hjust=rep(c(0,0,0,0,0,0),each=2),x=rep(c(0.01,0.01,0.01,0.01,0.01,0.01),each=2),vjust=rep(c(0.5,0.8),6),col='#122747',
 					fontsize=c(c(1,1),c(13.5,13),c(12,14),c(12,16),c(12,10),c(12,14))))
 	)
 	statTab_a.theme_forWeb$core$fg_params$fontfamily = rep('NotoSansCJKkrR',12)
 	statTab_a.theme_forWeb$core$fg_params$fontfamily[c(3,4,8,12)] = 'NotoSansCJKkrB'
-	statTab_a.theme_forWeb$core$fg_params$col = rep('#000000',12)
+	statTab_a.theme_forWeb$core$fg_params$col = rep('#122747',12)
 
 	statTab_b.theme_forWeb = ttheme_minimal(base_family='NotoSansCJKkrR',
 		core = list(bg_params=list(fill='#F7F8F9',col=NA),
@@ -453,12 +453,12 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 		widths=unit(statTab_b.W_forApp,'points'),heights=unit(statTab_b.H_forApp,'points'))
 
 	statTab_a.theme_forWeb$core$bg_params$fill = '#F7F8F9'
-	statTab_a.theme_forWeb$core$fg_params$col[8] = '#000000'
+	statTab_a.theme_forWeb$core$fg_params$col[8] = '#122747'
 	out.Web.statTab_sd_a = tableGrob(statTab_sd_a,theme=statTab_a.theme_forWeb,cols=NULL,rows=NULL,
 		widths=unit(statTab_a.W_forWeb,'points'),heights=unit(statTab_a.H_forWeb,'points'))
 
 	statTab_a.theme_forApp$core$bg_params$fill = '#F7F8F9'
-	statTab_a.theme_forApp$core$fg_params$col[8] = '#000000'
+	statTab_a.theme_forApp$core$fg_params$col[8] = '#122747'
 	out.App.statTab_sd_a = tableGrob(statTab_sd_a,theme=statTab_a.theme_forApp,cols=NULL,rows=NULL,
 		widths=unit(statTab_a.W_forApp,'points'),heights=unit(statTab_a.H_forApp,'points'))
 
@@ -490,7 +490,7 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 	# theme # 
 	statTab_ea1c_a.theme_forWeb = ttheme_minimal(base_family='NotoSansCJKkrR',
 		core = list(bg_params=list(fill=statTab_ea1c.bgcol,col=NA), 
-					fg_params=list(hjust=0,x=0.05,vjust=c(0.5,0),col=c('#000000','#808285'),
+					fg_params=list(hjust=0,x=0.05,vjust=c(0.5,0),col=c('#122747','#808285'),
 					fontsize=c(13.5,12),fontface='plain'))
 	)
 	statTab_ea1c_a.theme_forWeb$core$fg_params$fontfamily = c('NotoSansCJKkrB','NotoSansCJKkrR')
@@ -586,12 +586,12 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 
 	out.TIR[[2]] = ggplot(TIR.source, aes(x=xlab,y=yprime,fill=factor(TIR.source$levels),color=factor(x)))+
 		scale_fill_manual(values=c('5'='#b6202e','4'='#d71920','3'='#40ac49','2'='#fff100','1'='#fcb813'))+
-		scale_color_manual(values=c('1'='#000000','2'=NA))+
+		scale_color_manual(values=c('1'='#122747','2'=NA))+
 		geom_chicklet(width=(0.8/TIR.source$x),position='stack')+
-		geom_text(aes(label=paste(round(y,0),'%',sep='')),vjust=1.1,color='#000000',position='stack',size=4)+
-		geom_hline(yintercept=0,color='#000000',size=0.3)+
+		geom_text(aes(label=paste(round(y,0),'%',sep='')),vjust=1.1,color='#122747',position='stack',size=4)+
+		geom_hline(yintercept=0,color='#122747',size=0.3)+
 		theme(panel.background=element_rect(fill=NA), legend.position='none',
-			axis.ticks.x=element_blank(),axis.title.x=element_blank(),axis.text.x=element_text(size=13,color='#000000',family='NotoSansCJKkrR'),
+			axis.ticks.x=element_blank(),axis.title.x=element_blank(),axis.text.x=element_text(size=13,color='#122747',family='NotoSansCJKkrB'),
 			axis.ticks.y=element_blank(),axis.title.y=element_blank(),axis.text.y=element_blank(),
 			plot.margin=margin(0,0.3,0.3,-1,unit='cm'))
 
@@ -645,14 +645,14 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 #	tirTab.bgcol = rep(ifelse(tirTab.GoalYN==2,'#FFF6F9','#F7F8F9'),each=3)
 	tirTab.bgcol = rep(ifelse(tirTab.GoalYN==2,'#FFF6F9','#FFFFFF'),each=3) ##FFF6F9
 	tirTab.ftcol = vector('character',15)
-	tirTab.ftcol[which(c(1:15)%%3==1)] = ifelse(tirTab.GoalYN==2,'#FF2525','#000000')
-	tirTab.ftcol[which(c(1:15)%%3==2)] = ifelse(!is.na(tirTab.GoalYN),'#000000',NA)
-	tirTab.ftcol[which(c(1:15)%%3==0)] = '#000000' 
+	tirTab.ftcol[which(c(1:15)%%3==1)] = ifelse(tirTab.GoalYN==2,'#FF2525','#122747')
+	tirTab.ftcol[which(c(1:15)%%3==2)] = ifelse(!is.na(tirTab.GoalYN),'#122747',NA)
+	tirTab.ftcol[which(c(1:15)%%3==0)] = '#122747' 
 
 	tirTab.theme_forWeb = ttheme_minimal(base_family='NotoSansCJKkrR',
 #		core = list(bg_params=list(fill=tirTab.bgcol[!is.na(tirTab.bgcol)],col=NA),
 		core = list(bg_params=list(fill=c(rep('#FFFFFF',length(tirTab.row)),rep(tirTab.bgcol[!is.na(tirTab.bgcol)],2)),col=NA),
-					fg_params=list(hjust=rep(0,length(tirTab.row)*3),x=0.01,vjust=0.5,col=c(rep(tirTab.symb.col,each=3),rep('#000000',length(tirTab.row)),tirTab.ftcol[!is.na(tirTab.ftcol)]),
+					fg_params=list(hjust=rep(0,length(tirTab.row)*3),x=0.01,vjust=0.5,col=c(rep(tirTab.symb.col,each=3),rep('#122747',length(tirTab.row)),tirTab.ftcol[!is.na(tirTab.ftcol)]),
 					fontsize=c(rep(14,length(tirTab.row)),rep(c(13,12,12),length(tirTab.row)/3),rep(c(14,11,11),length(tirTab.row)/3)))
 		)
 	)
@@ -741,12 +741,12 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 			scale_fill_manual(values=c('1'='#fcb813','0'='#FFD85D'))+
 			scale_y_continuous(limits=ylim.tmp)+
 			geom_chicklet(width=0.5)+
-#			geom_text(aes(label=paste(round(y,0),'%',sep='')),vjust=-1,color='#000000',size=3.5)+
-			geom_text(aes(x=xlab,y=0,label=paste(round(y,0),'%\n(',timelab,')',sep='')),vjust=-0.5,color='#000000',size=3.5)+
-			geom_hline(yintercept=0,color='#000000',size=0.3)+
+#			geom_text(aes(label=paste(round(y,0),'%',sep='')),vjust=-1,color='#122747',size=3.5)+
+			geom_text(aes(x=xlab,y=0,label=paste(round(y,0),'%\n(',timelab,')',sep='')),vjust=-0.5,color='#122747',size=3.5)+
+			geom_hline(yintercept=0,color='#122747',size=0.3)+
 			labs(title='매우 높은 고혈당')+
-			theme(panel.background=element_rect(fill=NA),legend.position='none',plot.title=element_text(size=13,color='#000000',family='NotoSansCJKkrB'),
-			axis.ticks.x=element_blank(),axis.title.x=element_blank(),axis.text.x=element_text(size=10,color='#000000',family='NotoSansCJKkrR'),
+			theme(panel.background=element_rect(fill=NA),legend.position='none',plot.title=element_text(size=13,color='#122747',family='NotoSansCJKkrB'),
+			axis.ticks.x=element_blank(),axis.title.x=element_blank(),axis.text.x=element_text(size=10,color='#122747',family='NotoSansCJKkrR'),
 			axis.ticks.y=element_blank(),axis.title.y=element_blank(),axis.text.y=element_blank(),
 			plot.margin=margin(0.7,0.3,0.3,0.3,unit='cm'))
 
@@ -755,7 +755,7 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 			scale_x_continuous(limits=c(0,4))+
 			scale_y_continuous(limits=c(0,1))+
 			labs(title='매우 높은 고혈당',subtitle='해당사항 없음')+
-			theme(panel.background=element_rect(fill=NA),legend.position='none',plot.title=element_text(size=13,color='#000000',family='NotoSansCJKkrB'),
+			theme(panel.background=element_rect(fill=NA),legend.position='none',plot.title=element_text(size=13,color='#122747',family='NotoSansCJKkrB'),
 			plot.subtitle=element_text(size=13,color='#808285',family='NotoSansCJKkrB'),
 			axis.ticks.x=element_blank(),axis.title.x=element_blank(),axis.text.x=element_blank(),
 			axis.ticks.y=element_blank(),axis.title.y=element_blank(),axis.text.y=element_blank(),
@@ -770,11 +770,11 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 			scale_fill_manual(values=c('1'='#fff100','0'='#FFFF7D'))+
 			scale_y_continuous(limits=ylim.tmp)+
 			geom_chicklet(width=0.5)+
-			geom_text(aes(x=xlab,y=0,label=paste(round(y,0),'%\n(',timelab,')',sep='')),vjust=-0.5,color='#000000',size=3.5)+
-			geom_hline(yintercept=0,color='#000000',size=0.3)+
+			geom_text(aes(x=xlab,y=0,label=paste(round(y,0),'%\n(',timelab,')',sep='')),vjust=-0.5,color='#122747',size=3.5)+
+			geom_hline(yintercept=0,color='#122747',size=0.3)+
 			labs(title='고혈당')+
-			theme(panel.background=element_rect(fill=NA),legend.position='none',plot.title=element_text(size=13,color='#000000',family='NotoSansCJKkrB'),
-			axis.ticks.x=element_blank(),axis.title.x=element_blank(),axis.text.x=element_text(size=10,color='#000000',family='NotoSansCJKkrR'),
+			theme(panel.background=element_rect(fill=NA),legend.position='none',plot.title=element_text(size=13,color='#122747',family='NotoSansCJKkrB'),
+			axis.ticks.x=element_blank(),axis.title.x=element_blank(),axis.text.x=element_text(size=10,color='#122747',family='NotoSansCJKkrR'),
 			axis.ticks.y=element_blank(),axis.title.y=element_blank(),axis.text.y=element_blank(),
 			plot.margin=margin(0.7,0.3,0.3,0.3,unit='cm'))
 
@@ -783,7 +783,7 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 			scale_x_continuous(limits=c(0,4))+
 			scale_y_continuous(limits=c(0,1))+
 			labs(title='고혈당',subtitle='해당사항 없음')+
-			theme(panel.background=element_rect(fill=NA),legend.position='none',plot.title=element_text(size=13,color='#000000',family='NotoSansCJKkrB'),
+			theme(panel.background=element_rect(fill=NA),legend.position='none',plot.title=element_text(size=13,color='#122747',family='NotoSansCJKkrB'),
 			plot.subtitle=element_text(size=13,color='#808285',family='NotoSansCJKkrB'),
 			axis.ticks.x=element_blank(),axis.title.x=element_blank(),axis.text.x=element_blank(),
 			axis.ticks.y=element_blank(),axis.title.y=element_blank(),axis.text.y=element_blank(),
@@ -798,11 +798,11 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 			scale_fill_manual(values=c('1'='#D71920','0'='#F07C82'))+
 			scale_y_continuous(limits=ylim.tmp)+
 			geom_chicklet(width=0.5)+
-			geom_text(aes(x=xlab,y=0,label=paste(round(y,0),'%\n(',timelab,')',sep='')),vjust=-0.5,color='#000000',size=3.5)+
-			geom_hline(yintercept=0,color='#000000',size=0.3)+
+			geom_text(aes(x=xlab,y=0,label=paste(round(y,0),'%\n(',timelab,')',sep='')),vjust=-0.5,color='#122747',size=3.5)+
+			geom_hline(yintercept=0,color='#122747',size=0.3)+
 			labs(title='저혈당')+
-			theme(panel.background=element_rect(fill=NA),legend.position='none',plot.title=element_text(size=13,color='#000000',family='NotoSansCJKkrB'),
-			axis.ticks.x=element_blank(),axis.title.x=element_blank(),axis.text.x=element_text(size=10,color='#000000',family='NotoSansCJKkrR'),
+			theme(panel.background=element_rect(fill=NA),legend.position='none',plot.title=element_text(size=13,color='#122747',family='NotoSansCJKkrB'),
+			axis.ticks.x=element_blank(),axis.title.x=element_blank(),axis.text.x=element_text(size=10,color='#122747',family='NotoSansCJKkrR'),
 			axis.ticks.y=element_blank(),axis.title.y=element_blank(),axis.text.y=element_blank(),
 			plot.margin=margin(0.7,0.3,0.3,0.3,unit='cm'))
 
@@ -811,7 +811,7 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 			scale_x_continuous(limits=c(0,4))+
 			scale_y_continuous(limits=c(0,1))+
 			labs(title='저혈당',subtitle='해당사항 없음')+
-			theme(panel.background=element_rect(fill=NA),legend.position='none',plot.title=element_text(size=13,color='#000000',family='NotoSansCJKkrB'),
+			theme(panel.background=element_rect(fill=NA),legend.position='none',plot.title=element_text(size=13,color='#122747',family='NotoSansCJKkrB'),
 			plot.subtitle=element_text(size=13,color='#808285',family='NotoSansCJKkrB'),
 			axis.ticks.x=element_blank(),axis.title.x=element_blank(),axis.text.x=element_blank(),
 			axis.ticks.y=element_blank(),axis.title.y=element_blank(),axis.text.y=element_blank(),
@@ -826,11 +826,11 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 			scale_fill_manual(values=c('1'='#B6202E','0'='#E25C69'))+
 			scale_y_continuous(limits=ylim.tmp)+
 			geom_chicklet(width=0.5)+
-			geom_text(aes(x=xlab,y=0,label=paste(round(y,0),'%\n(',timelab,')',sep='')),vjust=-0.5,color='#000000',size=3.5)+
-			geom_hline(yintercept=0,color='#000000',size=0.3)+
+			geom_text(aes(x=xlab,y=0,label=paste(round(y,0),'%\n(',timelab,')',sep='')),vjust=-0.5,color='#122747',size=3.5)+
+			geom_hline(yintercept=0,color='#122747',size=0.3)+
 			labs(title='매우 낮은 저혈당')+
-			theme(panel.background=element_rect(fill=NA),legend.position='none',plot.title=element_text(size=13,color='#000000',family='NotoSansCJKkrB'),
-			axis.ticks.x=element_blank(),axis.title.x=element_blank(),axis.text.x=element_text(size=10,color='#000000',family='NotoSansCJKkrR'),
+			theme(panel.background=element_rect(fill=NA),legend.position='none',plot.title=element_text(size=13,color='#122747',family='NotoSansCJKkrB'),
+			axis.ticks.x=element_blank(),axis.title.x=element_blank(),axis.text.x=element_text(size=10,color='#122747',family='NotoSansCJKkrR'),
 			axis.ticks.y=element_blank(),axis.title.y=element_blank(),axis.text.y=element_blank(),
 			plot.margin=margin(0.7,0.3,0.3,0.3,unit='cm'))
 
@@ -839,7 +839,7 @@ create_GlucoseStat = function( data, unit.glucose='mg.dl', Target='T2DM', member
 			scale_x_continuous(limits=c(0,4))+
 			scale_y_continuous(limits=c(0,1))+
 			labs(title='매우 낮은 저혈당',subtitle='해당사항 없음')+
-			theme(panel.background=element_rect(fill=NA),legend.position='none',plot.title=element_text(size=13,color='#000000',family='NotoSansCJKkrB'),
+			theme(panel.background=element_rect(fill=NA),legend.position='none',plot.title=element_text(size=13,color='#122747',family='NotoSansCJKkrB'),
 			plot.subtitle=element_text(size=13,color='#808285',family='NotoSansCJKkrB'),
 			axis.ticks.x=element_blank(),axis.title.x=element_blank(),axis.text.x=element_blank(),
 			axis.ticks.y=element_blank(),axis.title.y=element_blank(),axis.text.y=element_blank(),
