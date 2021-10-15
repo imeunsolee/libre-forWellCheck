@@ -26,14 +26,14 @@ create_AGPPatternCheck = function( data, unit.glucose='mg.dl', Target='T2DM', Ta
 	## common theme ##
 
 	subTitle.theme_forWeb = ttheme_minimal(base_family='NotoSansCJKkrB',
-		core = list(bg_params=list(fill=NA,col=NA),
-					fg_params=list(hjust=0,x=0,vjust=0.5,col='#000000',
+		core = list(bg_params=list(fill='#000000',col=NA),
+					fg_params=list(hjust=0,x=0,vjust=0.5,col='#ffffff',
 					fontsize=14.5,fontface='plain')
 		)
 	)
 	remark.theme_forWeb = ttheme_minimal(base_family='NotoSansCJKkrR',
 		core = list(bg_params=list(fill=NA,col=NA),
-					fg_params=list(hjust=0,x=0,vjust=0.5,col='#808285',
+					fg_params=list(hjust=0,x=0,vjust=0.5,col='#767e89',
 					fontsize=13.5,fontface='plain')
 		)
 	)
@@ -45,7 +45,7 @@ create_AGPPatternCheck = function( data, unit.glucose='mg.dl', Target='T2DM', Ta
 	)
 	remark.theme_forApp = ttheme_minimal(base_family='NotoSansCJKkrR',
 		core = list(bg_params=list(fill=NA,col=NA),
-					fg_params=list(hjust=0,x=0.01,vjust=0.5,col='#808285',
+					fg_params=list(hjust=0,x=0.01,vjust=0.5,col='#767e89',
 					fontsize=17,fontface='plain'))
 	)
 
@@ -139,9 +139,9 @@ create_AGPPatternCheck = function( data, unit.glucose='mg.dl', Target='T2DM', Ta
 			annotate('text',x=as.POSIXct(strptime(paste(Sys.Date(),'00:00:00'),format='%Y-%m-%d %H:%M:%S',tz='GMT')),y=(-5),label='00:00',parse=T)+
 			geom_hline(yintercept=c(ymin.Target,ymax.Target),color='#40ac49')+
 			coord_cartesian(ylim=c(0,ylim.tmp),xlim=range(out.AGP[[p]][[1]]$time),expand=F,clip='off')+
-			theme(panel.background=element_rect(fill=NA,color=NA), panel.border=element_rect(colour='#231f20',fill=NA,size=0.4),
-				axis.text.y=element_text(color='#231f20',size=18,face='plain'), axis.ticks.y=element_line(size=0.3),
-				axis.text.x=element_text(color=c('#231f20',rep('#808285',3),'#231f20',rep('#808285',3),'#231f20'),size=16,hjust=0.5), axis.ticks.x=element_blank(),
+			theme(panel.background=element_rect(fill=NA,color=NA), panel.border=element_rect(colour='#122747',fill=NA,size=0.4),
+				axis.text.y=element_text(color='#122747',size=18,face='plain'), axis.ticks.y=element_line(size=0.3),
+				axis.text.x=element_text(color=c('#122747',rep('#767e89',3),'#122747',rep('#767e89',3),'#122747'),size=16,hjust=0.5), axis.ticks.x=element_blank(),
 				text=element_text(family='NotoSansCJKkrR'))
 
 		## last value line ---
@@ -170,8 +170,8 @@ create_AGPPatternCheck = function( data, unit.glucose='mg.dl', Target='T2DM', Ta
 			annotation_custom(grob=textGrob(expression('5%'),gp=gpar(col='#bcbec0',fontsize=12,fontface='bold',fontfamily='NotoSansCJKkrR')),xmin=last_date+20*60,xmax=last_date+20*60,ymin=last_value$Q05.s,ymax=last_value$Q05.s)+
 			annotation_custom(grob=linesGrob(gp=gpar(col='#bcbec0',lty=2,size=0.8)),xmin=last_date-30*60,xmax=last_date-10*60,ymin=last_value$Q05.s,ymax=last_value$Q05.s)+
 
-			annotation_custom(grob=textGrob(ymin.Target,gp=gpar(col='#231f20',fontsize=13,fontface='plain',fontfamily='NotoSansCJKkrB')),xmin=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-60*60),xmax=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-60*60),ymin=ymin.Target,ymax=ymin.Target)+ 
-			annotation_custom(grob=textGrob(ymax.Target,gp=gpar(col='#231f20',fontsize=13,fontface='plain',fontfamily='NotoSansCJKkrB')),xmin=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-60*60),xmax=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-60*60),ymin=ymax.Target,ymax=ymax.Target)+ 
+			annotation_custom(grob=textGrob(ymin.Target,gp=gpar(col='#122747',fontsize=13,fontface='plain',fontfamily='NotoSansCJKkrB')),xmin=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-60*60),xmax=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-60*60),ymin=ymin.Target,ymax=ymin.Target)+ 
+			annotation_custom(grob=textGrob(ymax.Target,gp=gpar(col='#122747',fontsize=13,fontface='plain',fontfamily='NotoSansCJKkrB')),xmin=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-60*60),xmax=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-60*60),ymin=ymax.Target,ymax=ymax.Target)+ 
 			annotation_custom(grob=linesGrob(gp=gpar(col='#40ac49',lwd=0.8)),xmin=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-35*60),xmax=as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT'),ymin=ymin.Target,ymax=ymin.Target)+
 			annotation_custom(grob=linesGrob(gp=gpar(col='#40ac49',lwd=0.8)),xmin=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-35*60),xmax=as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT'),ymin=ymax.Target,ymax=ymax.Target)
 
@@ -192,8 +192,8 @@ create_AGPPatternCheck = function( data, unit.glucose='mg.dl', Target='T2DM', Ta
 			annotation_custom(grob=textGrob(expression('5%'),gp=gpar(col='#bcbec0',fontsize=18,fontface='bold',fontfamily='NotoSansCJKkrR')),xmin=last_date+60*60,xmax=last_date+60*60,ymin=last_value$Q05.s,ymax=last_value$Q05.s)+
 			annotation_custom(grob=linesGrob(gp=gpar(col='#bcbec0',lty=2,size=0.8)),xmin=last_date-30*60,xmax=last_date-15*60,ymin=last_value$Q05.s,ymax=last_value$Q05.s)+
 
-			annotation_custom(grob=textGrob(ymin.Target,gp=gpar(col='#231f20',fontsize=20,fontface='plain',fontfamily='NotoSansCJKkrB')),xmin=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-120*60),xmax=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-120*60),ymin=ymin.Target,ymax=ymin.Target)+ 
-			annotation_custom(grob=textGrob(ymax.Target,gp=gpar(col='#231f20',fontsize=20,fontface='plain',fontfamily='NotoSansCJKkrB')),xmin=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-120*60),xmax=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-120*60),ymin=ymax.Target,ymax=ymax.Target)+ 
+			annotation_custom(grob=textGrob(ymin.Target,gp=gpar(col='#122747',fontsize=20,fontface='plain',fontfamily='NotoSansCJKkrB')),xmin=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-120*60),xmax=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-120*60),ymin=ymin.Target,ymax=ymin.Target)+ 
+			annotation_custom(grob=textGrob(ymax.Target,gp=gpar(col='#122747',fontsize=20,fontface='plain',fontfamily='NotoSansCJKkrB')),xmin=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-120*60),xmax=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-120*60),ymin=ymax.Target,ymax=ymax.Target)+ 
 			annotation_custom(grob=linesGrob(gp=gpar(col='#40ac49',lwd=0.8)),xmin=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-45*60),xmax=as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT'),ymin=ymin.Target,ymax=ymin.Target)+
 			annotation_custom(grob=linesGrob(gp=gpar(col='#40ac49',lwd=0.8)),xmin=(as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT')-45*60),xmax=as.POSIXct(strptime('00:00',format='%H:%M'),tz='GMT'),ymin=ymax.Target,ymax=ymax.Target)
 
@@ -213,25 +213,29 @@ create_AGPPatternCheck = function( data, unit.glucose='mg.dl', Target='T2DM', Ta
 #	TBRCut = 80 #  test / todo / rm 
 	TBR1.num = 1
 #	data$glucose[1] = 75 # test / todo / rm 
-	data$TBR1Idx = NA 
+	data$TBR1Idx = 0
+	data$TBR1Idx[is.na(data$glucose)] = NA 
 
-	for ( i in 1:nrow(data) ) {
-		if ( !is.na(data$glucose[i]) ) {
-			if ( data$glucose[i] < TBRCut ) {
+	TBR1Idx.tmp = which(data$glucose<TBRCut)
+	
+	if ( length(TBR1Idx.tmp)>0 ) {
 
-				TBR1.num = ifelse( i>1 && data$TBR1Idx[i-1]==0, TBR1.num+1, ifelse( i>1 && as.numeric(data$dateandtime[i] - round(data$dateandtime[i-1],unit='min'))>20, TBR1.num+1, TBR1.num) )
-				data$TBR1Idx[i] = TBR1.num
+		TBR1NUM = rep(1,length(TBR1Idx.tmp))
 
-			} else {
-				data$TBR1Idx[i] = 0
-			}
-		} else {
-			next 
+		for ( j in 2:length(TBR1Idx.tmp) ) {
+
+			diffTime = as.numeric(difftime(data$dateandtime[TBR1Idx.tmp[j]],data$dateandtime[TBR1Idx.tmp[j-1]],unit='min'))
+			TBR1NUM[j] = ifelse(diffTime>20, TBR1NUM[j-1]+1, TBR1NUM[j-1])
+
 		}
+
+		data$TBR1Idx[TBR1Idx.tmp] = TBR1NUM
+
 	}
 
+
 	## 저혈당 에피소드 Summary ##
-	library(sqldf) # todo / -> 위치이동 F_Libre_x_DW_report_onW library에 추가하기 
+	library(sqldf) # todo / -> LIBRARY 불러오기 위치이동 F_Libre_x_DW_report_onW library에 추가하기 
 	TBRevent = sqldf('select sub, TBR1Idx, min(dateandtime) as time_strt, max(dateandtime) as time_end, (max(dateandtime)-min(dateandtime))/60 as duration 
 	from data where TBR1Idx>0 group by TBR1Idx')
 	TBRevent$time_strt = as.POSIXct(TBRevent$time_strt,origin='1970-01-01',tz='GMT')
@@ -241,21 +245,23 @@ create_AGPPatternCheck = function( data, unit.glucose='mg.dl', Target='T2DM', Ta
 #	TBR1Stat = sqldf('select sub, TBR1Idx, min(dateandtime) as time_strt, max(dateandtime) as time_end, (max(dateandtime)-min(dateandtime))/60 as duration, avg(glucose) as glucose_avg, min(glucose) as glucose_min from data where TBR1Idx>0 amd TBR1dur>=15 group by TBR1Idx')
 
 	## 저혈당 에피소드 테이블 ##
-	ptrn.Hypo = ifelse( dim(TBRevent)[1] > 0, 1, 0 ) # 1 yes 0 no
+	ptrn.HYPO = any(TBRevent$sub==1) # T: 있음 F: 없음
 	out.PTRN[[1]] = data.frame(c1=c('저혈당에피소드',NA,NA))
-    out.PTRN.detail[[1]] = data.frame(c1=c('','','',''))
+	out.PTRN.detail[[1]] = data.frame(c1=c('','','',''))
 
-	if ( ptrn.Hypo[1]==1 ) {
+	if ( ptrn.HYPO[1] ) {
 
-		out.PTRN[[1]][2,1] = paste('총 ',length(TBRevent[which(TBRevent$sub==1),]$TBR1Idx),'회 평균지속시간 ',round(mean(TBRevent[which(TBRevent$sub==1),]$duration),0),'분',sep='')
-		ptrn.Hypo[2] = ifelse( sum(TIRstat[grepl('TBR',names(TIRstat))],na.rm=T) >= TargetGoal[[5]][[2]][2], 1, 0 ) # 1 bad 0 soso 
-		out.PTRN[[1]][3,1] = '5백분위수 선이 낮은 혈당 목표 아래로 낮아지지 않도록 관리합니다.'#'10분위수 선이 매우 낮은 혈당 목표 아래로 낮아지지 않도록 관리합니다.'
+		out.PTRN[[1]][2,1] = paste('총 ',length(TBRevent[which(TBRevent$sub==1),]$TBR1Idx),'회, 평균지속시간 ',round(mean(TBRevent[which(TBRevent$sub==1),]$duration),0),'분',sep='')
+		ptrn.HYPO[2] = ifelse( sum(TIRstat[grepl('TBR',names(TIRstat))],na.rm=T) >= TargetGoal[[5]][[2]][2], 1, 0 ) # 1 bad 0 soso 
+		out.PTRN[[1]][3,1] = '5백분위수 선이 낮은 혈당 목표 아래로 낮아지지 않도록 관리합니다.'
+		#'10분위수 선이 매우 낮은 혈당 목표 아래로 낮아지지 않도록 관리합니다.'
 
 	} else {
 
 		out.PTRN[[1]][2,1] = '총 0회 관측'
-		ptrn.Hypo[2] = NA 
-		out.PTRN[[1]][3,1] = '5백분위수 선이 낮은 혈당 목표 아래로 낮아지지 않도록 관리합니다.'#'10분위수 선이 매우 낮은 혈당 목표 아래로 낮아지지 않도록 관리합니다.'
+		ptrn.HYPO[2] = NA 
+		out.PTRN[[1]][3,1] = '5백분위수 선이 낮은 혈당 목표 아래로 낮아지지 않도록 관리합니다.'
+		#'10분위수 선이 매우 낮은 혈당 목표 아래로 낮아지지 않도록 관리합니다.'
 
 	}
 
@@ -368,7 +374,7 @@ create_AGPPatternCheck = function( data, unit.glucose='mg.dl', Target='T2DM', Ta
     ptrn.theme_forWeb = ttheme_minimal(base_family='NotoSansCJKkrR',
         core = list(bg_params=list(fill=c('#F7F8F9','#FFF6F9')[rep(c(ptrn.Hypo[2],ptrn.Hypo[2],ptrn.Hypo[2]),each=3)+1],col=NA),
                     fg_params=list(hjust=0,x=0.01,vjust=c(0,0,0.7),
-                        col=c(c('#000000',c('#000000','#FF2525')[ptrn.Hypo[2]+1],'#808285'),c('#000000',c('#000000','#FF2525')[ptrn.Hypo[2]+1],'#808285'),c('#000000',c('#000000','#FF2525')[ptrn.Hypo[2]+1],'#808285')),
+                        col=c(c('#000000',c('#000000','#FF2525')[ptrn.Hypo[2]+1],'#767e89'),c('#000000',c('#000000','#FF2525')[ptrn.Hypo[2]+1],'#767e89'),c('#000000',c('#000000','#FF2525')[ptrn.Hypo[2]+1],'#767e89')),
                         fontsize=c(13.5,14,11),fontface=c('plain','bold','plain'))
         )
     )
@@ -381,46 +387,46 @@ create_AGPPatternCheck = function( data, unit.glucose='mg.dl', Target='T2DM', Ta
 
 
 	### output =============================================================================#
-	AGPPlot.Remark = data.frame(x='AGP는 보고서 기간의 혈당 값을 요약한 것으로, 중앙값(50%) 및 기타 백분위수가 하루에 발생한 것처럼 함께 표시됩니다.')
-	AGPPlot.Remark1 = data.frame(c1='■',c2='25~75백분위수 면적은 일상적인 생활패턴에 의해 나타납니다.')
-	AGPPlot.Remark2 = data.frame(c1='■',c2='5~95백분위수 면적은 어느 특별한 이벤트에 의해 나타납니다.')
+	AGPPlot.Remark1 = data.frame(x='AGP는 보고서 기간의 혈당 값을 요약한 것으로, 중앙값(50%) 및 기타 백분위수가 하루에 발생한 것처럼 함께 표시됩니다.')
+	AGPPlot.Remark2 = data.frame(c1='■',c2='25~75백분위수 면적은 일상적인 생활패턴에 의해 나타납니다.')
+	AGPPlot.Remark3 = data.frame(c1='■',c2='5~95백분위수 면적은 어느 특별한 이벤트에 의해 나타납니다.')
 	
-	remark1.theme_forWeb = ttheme_minimal(base_family='NotoSansCJKkrR',
-		core = list(bg_params=list(fill=NA,col=NA),
-					fg_params=list(hjust=0,x=c(0.3,0),vjust=0.5,col=c('#a2b5d4','#808285'),
-					fontsize=12,fontface='plain')
-		)
-	)
 	remark2.theme_forWeb = ttheme_minimal(base_family='NotoSansCJKkrR',
 		core = list(bg_params=list(fill=NA,col=NA),
-					fg_params=list(hjust=0,x=c(0.3,0),vjust=0.5,col=c('#dfe3ed','#808285'),
+					fg_params=list(hjust=0,x=c(0.2,0),vjust=0.5,col=c('#a2b5d4','#767e89'),
 					fontsize=12,fontface='plain')
 		)
 	)
-	
-	remark1.theme_forApp = ttheme_minimal(base_family='NotoSansCJKkrR',
-		core = list(bg_params=list(fill=NA,col=NA),
-					fg_params=list(hjust=0,x=c(0.3,0),vjust=0.5,col=c('#a2b5d4','#808285'),
-					fontsize=17,fontface='plain')
-		)
-	)
-	remark2.theme_forApp = ttheme_minimal(base_family='NotoSansCJKkrR',
-		core = list(bg_params=list(fill=NA,col=NA),
-					fg_params=list(hjust=0,x=c(0.3,0),vjust=0.5,col=c('#dfe3ed','#808285'),
-					fontsize=17,fontface='plain')
-		)
-	)
 
-	CairoPNG(filename=paste(memberKey,createdtime,'Web_AGP.png',sep='_'),family='NotoSansCJKkrR',scale=1/0.32,bg='white',width=1168,height=502,unit='px',dpi=96)
+	remark3.theme_forWeb = remark2.theme_forWeb 
+	remark3.theme_forWeb$core$fg_params$col = c('#dfe3ed','#767e89')
+
+	remark2.theme_forApp = remark2.theme_forWeb
+	remark2.theme_forApp$core$fg_params$fontsize = 15
+	remark2.theme_forApp$core$fg_params$x = 0 
+	remark3.theme_forApp = remark3.theme_forWeb
+	remark3.theme_forApp$core$fg_params$fontsize = 15
+	remark3.theme_forApp$core$fg_params$x = 0
+
+	if ( step2.YN==F ) {
+
+	CairoPNG(filename=paste(memberKey,createdtime,'Web_AGP.png',sep='_'),family='NotoSansCJKkrR',scale=1/0.32,bg='white',width=1168,height=550,unit='px',dpi=96)
+
+	layout.mat = matrix(NA,nrow=6,ncol=3)
+	layout.mat[1,] = 1
+	layout.mat[2,] = 2 
+	layout.mat[3,] = 3
+	layout.mat[4,] = 4
+	layout.mat[6,2] = 5
 
 	LibreReport_AGP_forWeb = try(grid.arrange(grobs=list(
-		tableGrob('24시간 연속 혈당 프로필 (AGP)',theme=subTitle.theme_forWeb,cols=NULL,rows=NULL,widths=unit(876,'points'),heights=unit(28.5,'points')),
-		tableGrob(AGPPlot.Remark,theme=remark.theme_forWeb,cols=NULL,rows=NULL,widths=unit(876,'points'),heights=unit(26,'points')),
-		tableGrob(AGPPlot.Remark1,theme=remark1.theme_forWeb,cols=NULL,rows=NULL,widths=unit(c(24,852),'points'),heights=unit(21,'points')),
-		tableGrob(AGPPlot.Remark2,theme=remark2.theme_forWeb,cols=NULL,rows=NULL,widths=unit(c(24,852),'points'),heights=unit(21,'points')),
-		out.AGP[[1]][[3]]),
-		nrow=6,ncol=2,layout_matrix=rbind(c(1,1),NA,c(2,2),c(3,3),c(4,4),c(5,5)),
-		widths=unit(c(24,852),'points'),heights=unit(c(28.5,4,26,21,21,276),'points')),silent=T)
+		tableGrob(data.frame('','24시간 연속 혈당 프로필 (AGP)'),theme=subTitle.theme_forWeb,cols=NULL,rows=NULL,widths=unit(c(5,871),'points'),heights=unit(26,'points')), #1
+		tableGrob(data.frame('',AGPPlot.Remark1),theme=remark.theme_forWeb,cols=NULL,rows=NULL,widths=unit(c(5,871),'points'),heights=unit(26,'points')), #2
+		tableGrob(AGPPlot.Remark2,theme=remark2.theme_forWeb,cols=NULL,rows=NULL,widths=unit(c(20,856),'points'),heights=unit(21,'points')), #3
+		tableGrob(AGPPlot.Remark3,theme=remark3.theme_forWeb,cols=NULL,rows=NULL,widths=unit(c(20,856),'points'),heights=unit(21,'points')), #4
+		out.AGP[[1]][[3]]), #5
+		nrow=6,ncol=3,layout_matrix=layout.mat,
+		widths=unit(c(15,841,20),'points'),heights=unit(c(26,26,21,21,10,276),'points')),silent=T)
 
 	dev.off()
 
@@ -430,16 +436,55 @@ create_AGPPatternCheck = function( data, unit.glucose='mg.dl', Target='T2DM', Ta
 		errCode.sub = c(errCode.sub,'Errr_todo')
 	}
 
-	CairoPNG(filename=paste(memberKey,createdtime,'App_AGP.png',sep='_'),family='NotoSnasCJKkrR',scale=1/0.32,bg='white',width=720,height=(856/0.75),units='px',dpi=96)
+	# step2.YN = F #
+	} else {
+	
+	## ADD PTRN
+
+	ptrn.HYPO.bgcol = c('#F7F8F9','#FFF6F9')[ptrn.HYPO[2]+1]
+	ptrn.HYPO.ftcol = c('#122747','#FF2525')[ptrn.HYPO[2]+1]
+	PTRN.theme_forWeb = ttheme_minimal(base_family='NotoSansCJKkrR',
+		core = list(bg_params=list(fill=ptrn.HYPO.bgcol,col=NA),
+					fg_params=list(hjust=0,x=0,vjust=0.5,col=c('#122747',ptrn.HYPO.ftcol,'#808285'),
+					fontsize=c(12,16,11)))
+	)
+	PTRN.theme_forWeb$core$fg_params$fontfamily = c('NotoSansCJKkrR','NotoSansCJKkrB','NotoSansCJKkrR')
+
+	ptrn1.tmp = tableGrob(cbind('',out.PTRN[[1]]),theme=PTRN.theme_forWeb,cols=NULL,rows=NULL,widths=unit(c(5,300),'points'),heights=unit(c(26,33,55),'points'))
+
+	ptrn1.tmp1 = grid.arrange(grobs=list(ptrn1.tmp),nrow=1,ncol=1,layout_matrix(1),widths=unit(305,'points'),heights=unit(114,'points'))
+	
+	ptrn1.tmp2 = gtable_add_grob(ptrn1.tmp1,grobs=rectGrob(gp=gpar(fill=NA,col='red')),t=1,b=1,l=1,r=1)
+
+	grob.tmp = ptrn1.tmp2$grobs[[2]]
+	rgrob.tmp = roundrectGrob(x=grob.tmp$x,y=grob.tmp$y,width=grob.tmp$width,height=grob.tmp$height,r=unit(0.1,'snpc'),just=grob.tmp$just,name=grob.tmp$name,gp=grob.tmp$gp,vp=grob.tmp$vp)	
+
+	ptrn1.tmp2$grobs[[2]] = rgrob.tmp
+	x11();plot(ptrn1.tmp2)
+
+	}
+
+
+
+	## forApp ==== ##
+
+	# App은 step2.YN 여부와 관계없이 패턴요약멘트 미제공 # 
+
+	CairoPNG(filename=paste(memberKey,createdtime,'App_AGP.png',sep='_'),family='NotoSnasCJKkrR',scale=1/0.32,bg='white',width=720,height=1070,units='px',dpi=96)
+
+#	AGPPlot.Remark2[2] = paste(strwrap(AGPPlot.Remark2[2],width=50),collapse='\n')
+#	AGPPlot.Remark3[2] = paste(strwrap(AGPPlot.Remark3[2],width=50),collapse='\n')
+	layout.mat[3,1] = layout.mat[4,1] = NA 
+	layout.mat[6,] = 5
 
 	LibreReport_AGP_forApp = try(grid.arrange(grobs=list(
-		tableGrob('24시간 연속 혈당 프로필 (AGP)',theme=subTitle.theme_forApp,cols=NULL,rows=NULL,widths=unit(512,'points'),heights=unit(50,'points')),
-		tableGrob(paste(strwrap(AGPPlot.Remark,width=63),collapse='\n'),theme=remark.theme_forApp,cols=NULL,rows=NULL,widths=unit(512,'points'),heights=unit(58,'points')),
-		tableGrob(AGPPlot.Remark1,theme=remark1.theme_forApp,cols=NULL,rows=NULL,widths=unit(c(24,488),'points'),heights=unit(27,'points')),
+		tableGrob(data.frame('','24시간 연속 혈당 프로필 (AGP)'),theme=subTitle.theme_forApp,cols=NULL,rows=NULL,widths=unit(c(10,502),'points'),heights=unit(50,'points')), #1
+		tableGrob(data.frame('',paste(strwrap(AGPPlot.Remark1,width=63),collapse='\n')),theme=remark.theme_forApp,cols=NULL,rows=NULL,widths=unit(c(10,502),'points'),heights=unit(58,'points')),
 		tableGrob(AGPPlot.Remark2,theme=remark2.theme_forApp,cols=NULL,rows=NULL,widths=unit(c(24,488),'points'),heights=unit(27,'points')),
+		tableGrob(AGPPlot.Remark3,theme=remark3.theme_forApp,cols=NULL,rows=NULL,widths=unit(c(24,488),'points'),heights=unit(27,'points')),
 		out.AGP[[1]][[4]]),
-		nrow=8,ncol=5,layout_matrix=rbind(NA,c(NA,1,1,1,NA),NA,c(NA,2,2,2,NA),c(NA,3,3,3,NA),c(NA,4,4,4,NA),c(5,5,5,5,NA),NA),
-		widths=unit(c(14,24,464,24,14),'points'),heights=unit(c(10,50,4,58,27,27,600,14),'points')),silent=T)
+		nrow=6,ncol=3,layout_matrix=layout.mat,
+		widths=unit(c(10,492,10),'points'),heights=unit(c(50,58,27,27,10,600),'points')),silent=T)
 	
 	dev.off()
 
