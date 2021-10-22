@@ -208,7 +208,7 @@ create_AGPPatternCheck = function( data, unit.glucose='mg.dl', Target='T2DM', Ta
 	out.PTRN = vector('list',3)
 	out.PTRN.detail = vector('list',3)
 
-	## 항목1. 저혈당에피소드 ---
+	## 항목1. 저혈당에피소드 --- ##
 	TBRCut = TargetGoal[[5]][[1]][2]
 #	TBRCut = 80 #  test / todo / rm 
 	TBR1.num = 1
@@ -245,7 +245,7 @@ create_AGPPatternCheck = function( data, unit.glucose='mg.dl', Target='T2DM', Ta
 #	TBR1Stat = sqldf('select sub, TBR1Idx, min(dateandtime) as time_strt, max(dateandtime) as time_end, (max(dateandtime)-min(dateandtime))/60 as duration, avg(glucose) as glucose_avg, min(glucose) as glucose_min from data where TBR1Idx>0 amd TBR1dur>=15 group by TBR1Idx')
 
 	## 저혈당 에피소드 테이블 ##
-	ptrn.HYPO = any(TBRevent$sub==1) # T: 있음 F: 없음
+	ptrn.HYPO = as.numeric(any(TBRevent$sub==1)) # T: 있음 F: 없음
 	out.PTRN[[1]] = data.frame(c1=c('저혈당에피소드',NA,NA))
 	out.PTRN.detail[[1]] = data.frame(c1=c('','','',''))
 
@@ -266,17 +266,18 @@ create_AGPPatternCheck = function( data, unit.glucose='mg.dl', Target='T2DM', Ta
 	}
 
 
-	## 항목2. 롤러코스터패턴 ---
+	## 항목2. 롤러코스터패턴 --- ##
 	# : 하루내 혈당패턴이 들쭉날쭉한 경우 = intra-days, within days variation이 크다 = 하루내 혈당변동이 크다 => flatter한 혈당변동을 목표로 조절해야함 # 
 	x.hhmm = tapply(data[which(data$sub==1 & data$log==1),]$glucose,data[which(data$sub==1 & data$log==1),]$HMSIdx.15M,mean,na.rm=T)
 	sd.hhmm = sd(x.hhmm,na.rm=T)
-	ptrn.RollerCoaster = ifelse( sd.hhmm > 26, 1, 0 ) # 1 yes 0 no 
+
+	ptrn.ROLL = as.numeric(sd.hhmm>26) # T: 있음 F:없음 
 	out.PTRN[[2]] = data.frame(c1=c('24시간패턴 #intra-day'))
 	out.PTRN.detail[[2]] = data.frame(c1=c('','','',''))
 
-	if ( ptrn.RollerCoaster[1]==1 ) {
+	if ( ptrn.ROLL[1] ) {
 
-		out.PTRN[[2]][2,1] = '롤러코스터 패턴' 
+		out.PTRN[[2]][2,1] = '롤러코스터 패턴'
 		out.PTRN[[2]][3,1] = '24시간 혈당패턴이 높은 변동성을 보입니다. flatter한 혈당패턴이 되도록 관리해야합니다.'
 
 		## 혈당변동을 일으키는 시간 구간 ---
@@ -289,6 +290,7 @@ create_AGPPatternCheck = function( data, unit.glucose='mg.dl', Target='T2DM', Ta
 			t = c(1:length(timepoint))
 			coef.w[i] = coef(lm(x.tmp~t))['t']
 		}
+		# by 6H (group by HMSIdx.6H)
 		x.hhmm.sub = vector('list',4) # 4개 HMSIdx.6H
 		sd.hhmm.sub = vector('list',4)
 		for ( b in 1:4 ) {
@@ -304,7 +306,7 @@ create_AGPPatternCheck = function( data, unit.glucose='mg.dl', Target='T2DM', Ta
 				faster.time = format(HMScut.15M[faster.set],'%H시%M분')
 				faster.adv = '급격한 '
 			} else {
-				faster.time = format(HSMcut.15M[which.max(coef.w)],'%H시%M분')
+				faster.time = format(HMScut.15M[which.max(coef.w)],'%H시%M분')
 				faster.adv = ''
 			}
 			faster.time = paste(faster.time,collapse=',')
@@ -332,12 +334,12 @@ create_AGPPatternCheck = function( data, unit.glucose='mg.dl', Target='T2DM', Ta
 		out.PTRN.detail[[2]][2,1] = paste(paste(c('야간','오전','오후','저녁')[maxvar.intraday.Idx],collapse=','),'시간 혈당변동패턴',sep='')
 
 	} else {
-		out.PTRN[[2]][2,1] = '롤러코스터 패턴이 없습니다.'
+		out.PTRN[[2]][2,1] = '롤러코스터 패턴이 양호합니다.'
 		out.PTRN[[2]][3,1] = '24시간 혈당패턴이 안정적인 변동성을 보입니다. flatter한 혈당패턴을 유지하도록 관리해야합니다.'
 	}
 
 
-	## 항목3. 풍선패턴 --- ## out.PTRN.detail[[3]] / todo 210719 
+	## 항목3. 풍선패턴 --- ##
 	# : inter-day 혈당변동
 	sd.dm = sd(tapply(data[which(data$sub==1 & data$log==1),]$glucose,data[which(data$sub==1 & data$log==1),]$date,mean,na.rm=T))
 	x.b.hhmm = tapply(data[which(data$sub==1 & data$log==1),]$glucose,data[which(data$sub==1 & data$log==1),]$HMSIdx.15M,sd,na.rm=T)
@@ -347,15 +349,52 @@ create_AGPPatternCheck = function( data, unit.glucose='mg.dl', Target='T2DM', Ta
 	out.AGP[[p]][[1]]$IDR = out.AGP[[p]][[1]]$Q95 - out.AGP[[p]][[1]]$Q05
 	out.AGP[[p]][[1]]$diffIQRIDR = (out.AGP[[p]][[1]]$IDR - out.AGP[[p]][[1]]$IQR)
 
-	ptrn.Ballooning = ifelse( sd.b.hhmm > 26, 2, ifelse( sd(x.b.hhmm,na.rm=T) > sd.b.hhmm/3, 1, 0 ) )
+	ptrn.BALL = ifelse( sd.b.hhmm > 26, 2, ifelse( sd(x.b.hhmm,na.rm=T) > sd.b.hhmm/3, 1, 0 ) )
 	out.PTRN[[3]] = data.frame(c1=c('일일간혈당패턴 #day-to-day #inter-day'))
-	if ( ptrn.Ballooning>0 ) {
+	out.PTRN.detail[[3]] = data.frame(c1=c('','','','',''))
+	if ( ptrn.BALL[1]>0 ) {
 		out.PTRN[[3]][2,1] = '풍선 패턴'
-		if ( ptrn.Ballooning==1 ) {
+		if ( ptrn.BALL[1]==1 ) {
 			out.PTRN[[3]][3,1] = '일일 혈당패턴이 높은 변동성을 보입니다. 풍선처럼 부푼 25-75백분위수 면적의 패턴이 줄어들도록 관리해야합니다.'
-		} else if ( ptrn.Ballooning==2 ) {
+		} else if ( ptrn.BALL[1]==2 ) {
 			out.PTRN[[3]][3,1] = '일일 혈당패턴이 높은 변동성을 보입니다. 풍선처럼 부풀어오르는 패턴이 줄어들도록 관리해야합니다.'
 		}
+
+		
+		## IQR 혈당변동을 일으키는 시간 구간 ---
+		# IQR이 가장 큰 변동을 보이는 때 != 일일간혈당변동성과 일치하는 것은 아니지만 이를 고치기 위해 점검해야할 것 
+		p=1 ## 
+		maxIQR.timeidx = which.max(out.AGP[[p]][[1]][1:96,]$IQR) # 여러건이면 어떻게하지 ? # 
+		coef.b = rep(NA,96)
+		for ( i in 1:96 ) {
+			timepoint = (i-1):(i+1) #30MIN
+			t = c(1:length(timepoint))
+			timepoint = ifelse( timepoint<1, timepoint+96, ifelse( timepoint>96, timepoint-96, timepoint ))
+			x.b = out.AGP[[p]][[1]][which(out.AGP[[p]][[1]]$index%in%timepoint),]$IQR
+			coef.b[i] = coef(lm(x.b~t))['t']
+		}
+
+		ballooning.strt = max(which(coef.b[1:(max(maxIQR.timeidx)-1)]<0))+1 
+		ballooning.end = c((max(maxIQR.timeidx)+1):96)[which(coef.b[(max(maxIQR.timeidx)+1):96]>0)[1]]
+		
+		out.PTRN.detail[[3]][1,1] = '일일간혈당패턴 점검'
+		out.PTRN.detail[[3]][2,1] = '규칙적 습관을 점검합니다.'
+		out.PTRN.detail[[3]][3,1] = paste(format(HMScut.15M[ballooning.strt],'%H시%M분'),'-',format(HMScut.15M[ballooning.end],'%H시%M분'),sep='')
+
+
+		## IDR 혈당변동을 일으키는 시간 구간 ----
+		# IQR의 변동은 작은편이지만, IDR의 변동이 큰 예외적인 경우 
+		maxIDR.timeidx
+		
+		out.PTRN.detail[[3]][4,1] = '평소와 다른 불규칙하거나 특별한 이벤트를 점검합니다.'
+		out.PTRN.detail[[3]][5,1] = paste(format(HMScut.15M[ballooning.strt],'%H시%M분'),'-',format(HMScut.15M[ballooning.end],'%H시%M분'),sep='')
+		
+
+
+
+
+
+		# IDR이 가장 큰 변동을 보이는 때 
 
 		### (detail 3-1) interVar이 가장 큰 시간 ---
 		maxIQR.timeidx = which(out.AGP[[p]][[1]][1:96,]$IQR==max(out.AGP[[p]][[1]]$IQR,na.rm=T))
@@ -460,7 +499,35 @@ create_AGPPatternCheck = function( data, unit.glucose='mg.dl', Target='T2DM', Ta
 	rgrob.tmp = roundrectGrob(x=grob.tmp$x,y=grob.tmp$y,width=grob.tmp$width,height=grob.tmp$height,r=unit(0.1,'snpc'),just=grob.tmp$just,name=grob.tmp$name,gp=grob.tmp$gp,vp=grob.tmp$vp)	
 
 	ptrn1.tmp2$grobs[[2]] = rgrob.tmp
-	x11();plot(ptrn1.tmp2)
+	x11();plot(ptrn1.tmp2)# todo / 211022 
+	x11();plot(ptrn1.tmp1)# todo / 211022 
+
+	#
+	ptrn.ROLL.bgcol = c('#F7F8F9','#FFF6F9')[ptrn.ROLL[1]+1]
+#	ptrn.ROLL.ftcol = c('#122747','#FF2525')[ptrn.ROLL[1]+1]
+	PTRN.theme_forWeb$core$bg_params$fill = ptrn.ROLL.bgcol
+	PTRN.theme_forWeb$core$fg_params$col[2] = '#122747'
+
+	ptrn2.tmp = tableGrob(cbind('',out.PTRN[[2]]),theme=PTRN.theme_forWeb,cols=NULL,rows=NULL,widths=unit(c(5,300),'points'),heights=unit(c(26,33,55),'points'))
+
+	#
+	ptrn.ROLL.detail.ftcol = c('#122747','#FF2525')[apply(out.PTRN.detail[[2]],1,function(x){as.numeric(grepl('급격한',x))})+1]
+	PTRN.detail.theme_forWeb = ttheme_minimal(base_family='NotoSansCJKkrR',
+		core = list(bg_params=list(fill='#F7F8F9',col=NA),
+					fg_params=list(hjust=0,x=0,vjust=0.5,col=ptrn.ROLL.detail.ftcol,fontsize=c(12,14,13,13)))
+	)
+	PTRN.detail.theme_forWeb$core$fg_params$fontfamily = c('NotoSansCJKkrR','NotoSansCJKkrB','NotoSansCJKkrR','NotoSansCJKkrR')
+
+	ptrn22.tmp = tableGrob(cbind('',out.PTRN.detail[[2]]),theme=PTRN.detail.theme_forWeb,cols=NULL,rows=NULL,widths=unit(c(5,300),'points'),heights=unit(c(26,33,26,27),'points'))
+
+	#
+
+
+
+
+	
+
+
 
 	}
 
